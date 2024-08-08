@@ -1,0 +1,40 @@
+footer{
+    border-top: 8px solid #660066;
+}
+
+h3{
+    margin: 10px 0;
+    padding: 0 100px;
+}
+
+.footercontent{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 100px;
+}
+
+.footertopics{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+p{
+    margin: 0;
+    padding: 0;
+}
+
+.icons{
+    display: flex;
+    gap: 7px;
+}
+
+.icon{
+    height: 30px;
+}

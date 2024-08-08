@@ -1,0 +1,20 @@
+.cardcontainer{
+    width: 500px;
+}
+
+.cardimage{
+    width: 100%;
+}
+
+.cardtitle{
+    margin: 0;
+    padding: 0;
+}
+
+.carddescription{
+
+}
+
+.carddetails{
+    font-size: 14px;
+}

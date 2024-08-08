@@ -1,0 +1,9 @@
+.subtitle{
+    margin: 20px 100px 0 100px;
+    padding-bottom: 5px;;
+    font-family: 'Merriweather';
+    color: #660066;
+    font-weight: 700;
+    font-size: 40px;
+    border-bottom: 1px solid black;
+}

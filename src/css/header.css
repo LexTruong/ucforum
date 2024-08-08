@@ -1,0 +1,32 @@
+.header{
+    color: white;
+    background-color: #660066;
+    height: 120px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: Merriweather;
+}
+
+.logo{
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+}
+
+h1{
+    padding: 0;
+    margin: 0;
+}
+
+#subtext {
+    font-style: italic;
+    margin: 0;
+    margin-top: -5px;
+    padding-bottom: 10px;
+    font-size: 19px;
+}
+
