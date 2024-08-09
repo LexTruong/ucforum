@@ -19,6 +19,16 @@ a{
     color: black;
 }
 
+.signin{
+    background-color: lightgray;
+    width: 70px;
+    height: 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media screen and (max-width: 1024px) {
     .topics{
         gap: 50px;
@@ -33,3 +43,4 @@ a{
         padding: 10px 0;
     }
 }
+

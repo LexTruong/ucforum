@@ -9,7 +9,9 @@ export default function Navbar() {
                 <Link to="/topic/education">Education</Link>
                 <Link to="/topic/culture">Culture</Link>
             </div>
-            <Link to="/signin" className="signin">Sign In</Link>
+            <div className="signin">
+                <Link to="/signin">Sign In</Link>
+            </div>
         </nav>
     )
 }

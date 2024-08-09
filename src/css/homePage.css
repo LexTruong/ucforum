@@ -4,6 +4,16 @@
     font-family: 'Merriweather';
     color: #660066;
     font-weight: 700;
-    font-size: 40px;
+    font-size: 35px;
     border-bottom: 1px solid black;
+}
+
+.topictitle{
+    text-align: center;
+    margin: 20px 100px 0px 100px;
+    padding-bottom: 5px;
+    border-bottom: 8px solid #660066;
+    font-family: 'Merriweather';
+    font-weight: 800;
+    font-size: 40px;
 }

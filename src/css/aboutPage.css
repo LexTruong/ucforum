@@ -1,0 +1,30 @@
+.aboutpagecontainer h1{
+    color: #660066;
+    text-align: center;
+    border-bottom: 1px solid black;
+    margin: 0 100px;
+    padding: 10px 0 5px 0;
+    font-family: "Meriweather";
+    font-weight: 700;
+}
+
+.valuedescription {
+    margin: 5px 100px;
+}
+
+.aboutpagecontainer h2 {
+    margin: 20px 100px 0 100px;
+}
+
+.about{
+    margin: 10px 100px;
+}
+
+.about p{
+}
+
+.about img{
+    width: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+}

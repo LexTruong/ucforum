@@ -1,0 +1,56 @@
+.signincontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 200px;
+}
+
+.signinform{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 30px;
+}
+
+.enterform {
+    background-color: lightgray;
+}
+
+::placeholder {
+    color:black;
+}
+
+.createAccountbtn {
+    background-color: #660066;
+    width: 410px;
+    border-radius: 10px;
+    border: none;
+    height: 50px;
+    color:white;
+}
+
+.createAccountbtn:hover{
+    cursor: pointer;
+}
+
+.signinbtn:hover{
+    cursor: pointer;
+}
+
+.signinbtn {
+    background-color: #BE29EC;
+    width:100%;
+    color:white;
+}
+
+.forgot {
+    padding-top: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+
+hr{
+    width: 410px;
+}
