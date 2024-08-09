@@ -1,5 +1,5 @@
 .cardcontainer{
-    width: 500px;
+    padding: 0 10px;
 }
 
 .cardimage{
@@ -9,10 +9,6 @@
 .cardtitle{
     margin: 0;
     padding: 0;
-}
-
-.carddescription{
-
 }
 
 .carddetails{

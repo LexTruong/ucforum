@@ -1,41 +1,36 @@
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext} from "pure-react-carousel";
-import 'pure-react-carousel/dist/react-carousel.es.css';
+import Carousel from "react-multi-carousel"
 import PostCard from "./PostCard";
+import "react-multi-carousel/lib/styles.css";
 import "../css/carousel.css"
 
-export default function Carousel() {
+const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1440 },
+      items: 3,
+      slidesToSlide: 3 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1440, min: 960 },
+      items: 2,
+      slidesToSlide: 2 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 960, min: 0 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    }
+  }
+
+export default function PostCarousel() {
     return(
-        <CarouselProvider
-            naturalSlideHeight={90}
-            naturalSlideWidth={100}
-            totalSlides={5}
-            visibleSlides={3}
-            infinite = {true}
-            isIntrinsicHeight={true}
-            className="carousel"
-        >
-            <Slider className="slider">
-                <Slide index={0} className="slide">
-                    <PostCard></PostCard>
-                </Slide>
-                <Slide index={1} className="slide">
-                    <PostCard></PostCard>
-                </Slide>
-                <Slide index={2} className="slide">
-                    <PostCard></PostCard>
-                </Slide>
-                <Slide index={3} className="slide">
-                    <PostCard></PostCard>
-                </Slide>
-                <Slide index={4} className="slide">
-                    <PostCard></PostCard>
-                </Slide>
-                {/* <Slide index={5} className="slide">
-                    <PostCard></PostCard>
-                </Slide> */}
-            </Slider>
-        <ButtonBack className="carouselbutton back">&#8592;</ButtonBack>
-        <ButtonNext className="carouselbutton next">&#8594;</ButtonNext>
-        </CarouselProvider>
+        <div className="carouselcontainer">
+            <Carousel responsive={responsive} className="carousel" itemClass="item">
+                <PostCard className="card"/>
+                <PostCard />
+                <PostCard />
+                <PostCard />
+                <PostCard />
+            </Carousel>
+        </div>
     )
 }

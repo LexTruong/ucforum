@@ -24,3 +24,12 @@ a{
         gap: 50px;
     }
 }
+
+@media screen and (max-width: 576px) {
+    nav{
+        flex-direction: column;
+        gap: 10px;
+        height: 50px;
+        padding: 10px 0;
+    }
+}

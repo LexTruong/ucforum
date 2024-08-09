@@ -1,48 +1,9 @@
-.carousel{
-    padding: 20px 100px;
-    position: relative;
+.carouselcontainer{
+    padding: 10px 90px;
 }
 
-.carousel__slider-tray{
-    justify-content: space-between;
-}
-
-.slider {
-    /* display: flex; */
-}
-
-.carousel__slide-visible{
-    /* width: 100px; */
-}
-
-.carousel__inner-slide{
-    width: 280px;
-    padding-right: 20px;
-    margin-right: 20px;
-}
-
-.back{
-    position: absolute;
-    left: 110px;
-}
-
-.next {
-    position: absolute;
-    right: 110px;
-}
-
-.carouselbutton{
-    top: 30%;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+.react-multiple-carousel__arrow{
+    top: 35%;
+    background-color: grey;
     opacity: 60%;
-    border: none;
-    font-size: 20px;
 }
-
-.carouselbutton:hover {
-    background-color: aqua;
-}
-
-
