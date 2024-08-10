@@ -14,7 +14,9 @@ export default function AboutPage() {
             <h1> About </h1>
             <div className="about">
                 <p className="aboutText">A longtime Republican stronghold before President Biden’s victory in 2020, the state is tricky political territory for Democrats, who confront magnified concerns over the number of migrants coming across the U.S.-Mexico border. A handful of polls in recent weeks have shown former President Donald J. Trump leading Ms. Harris by the mid-single digits, even as her numbers have improved in other vital states.</p>
-                <img src={yosemite} alt="circleImage"></img>
+                <div className="circular">
+                    <img src={yosemite} alt="circleImage"></img>
+                </div>
             </div>
         </div>
     )
