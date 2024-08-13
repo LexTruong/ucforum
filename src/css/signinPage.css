@@ -43,6 +43,9 @@
     background-color: #BE29EC;
     width:100%;
     color:white;
+    border: none;
+    border-radius: 10px;
+    height: 50px;
 }
 
 .forgot {

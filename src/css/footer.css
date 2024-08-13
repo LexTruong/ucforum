@@ -40,6 +40,8 @@ p{
     height: 30px;
 }
 
+
+
 @media screen and (max-width: 576px) {
     .footercontent{
         flex-direction: column;

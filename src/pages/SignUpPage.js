@@ -5,8 +5,8 @@ export default function SignUpPage() {
         <div className="signupcontainer">
             <form className="signupform">
                 <div className="fullname">
-                    <input type="text" name="fname" placeholder="First Name" required/>
-                    <input type="text" name="lname" placeholder="Last Name" required/>
+                    <input className="input" type="text" name="fname" placeholder="First Name" required/>
+                    <input className="input" type="text" name="lname" placeholder="Last Name" required/>
                 </div>
                 <div className="dropdowns">
                     <select action="#" name="school" required>
@@ -30,9 +30,9 @@ export default function SignUpPage() {
                         <option value="faculty">Faculty</option>
                     </select>
                 </div>
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="submit" value="Create Account" className="create"/>
+                <input className="input" type="email" name="email" placeholder="Email" required />
+                <input className="input" type="password" name="password" placeholder="Password" required />
+                <input className="input create" type="submit" value="Create Account" />
             </form>
         </div>
     )
