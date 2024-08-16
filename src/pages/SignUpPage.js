@@ -1,9 +1,46 @@
+import { useNavigate } from "react-router-dom"
 import "../css/signupPage.css"
+import { useEffect } from "react"
 
 export default function SignUpPage() {
+    const navigate = useNavigate()
+
+    async function handleRegister(e) {
+        e.preventDefault()
+
+        const form = e.target
+        const user = {
+            email: form[4].value,
+            password: form[5].value
+        }
+
+        fetch("http://localhost:8080/register", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(data => {
+            navigate("/")
+            console.log(data)
+        })
+    }
+
+    useEffect(() => {
+        fetch("http://localhost:8080/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token")
+            }
+        })
+        .then(res => res.json())
+        .then(data => data.isLoggedIn ? navigate("/") : null)
+    }, [navigate])    
+
     return (
         <div className="signupcontainer">
-            <form className="signupform">
+            <form className="signupform" onSubmit={e => handleRegister(e)}>
                 <div className="fullname">
                     <input className="input" type="text" name="fname" placeholder="First Name" required/>
                     <input className="input" type="text" name="lname" placeholder="Last Name" required/>
