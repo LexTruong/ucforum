@@ -17,10 +17,9 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 // connecting to mongoDB database
 // username: lextruong
 // password: BjcZCcvL4Q5ijs32
-const dbURI = "mongodb+srv://lextruong:BjcZCcvL4Q5ijs32@cluster0.705zh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const dbURI = "mongodb+srv://lextruong:BjcZCcvL4Q5ijs32@cluster0.705zh.mongodb.net/data?retryWrites=true&w=majority&appName=Cluster0"
 
 mongoose.connect(dbURI)
-
 
 // routes
 app.post("/register", async (req, res) => {
@@ -35,6 +34,10 @@ app.post("/register", async (req, res) => {
         encryptedPassword = await bcrypt.hash(req.body.password, 10)
 
         const dbUser = new User({
+            first: user.first.toLowerCase(),
+            last: user.last.toLowerCase(),
+            school: user.school,
+            position: user.position,
             email: user.email.toLowerCase(),
             password: encryptedPassword
         })
@@ -57,7 +60,8 @@ app.post("/login", (req, res) => {
             if (isCorrect) {
                 const payload = {
                     id: dbUser._id,
-                    email: dbUser.email,
+                    first: dbUser.first,
+                    last: dbUser.last
                 }
                 jwt.sign(
                     payload,
@@ -92,7 +96,8 @@ function verifyJWT(req, res, next) {
             })
             req.user = {};
             req.user.id = decoded.id
-            req.user.email = decoded.email
+            req.user.first = decoded.first
+            req.user.last = decoded.last
             next()
         })
     }
@@ -102,7 +107,11 @@ function verifyJWT(req, res, next) {
 }
 
 app.get("/isUserAuth", verifyJWT, (req, res) => {
-    res.json({isLoggedIn:true, email: req.user.email})
+    res.json({
+        isLoggedIn:true,
+        first: req.user.first,
+        last: req.user.last
+    })
 })
 
 app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'));

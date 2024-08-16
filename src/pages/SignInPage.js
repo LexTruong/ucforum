@@ -25,6 +25,7 @@ export default function SignInPage() {
         .then(data => {
             localStorage.setItem("token", data.token)
             navigate("/")
+            navigate(0)
             console.log(data)
         })
     }

@@ -1,31 +1,77 @@
 import { useNavigate } from "react-router-dom"
 import "../css/signupPage.css"
 import { useEffect } from "react"
+import validator from "validator"
+
 
 export default function SignUpPage() {
     const navigate = useNavigate()
 
+    const validateEmail = (email) => {
+        const atLocation = email.search("@")
+        const afterAt = email.slice(atLocation+1)
+        if(afterAt.includes("uci.edu") ||
+            afterAt.includes("ucla.edu") ||
+            afterAt.includes("berkeley.edu") ||
+            afterAt.includes("ucr.edu") ||
+            afterAt.includes("ucsc.edu") ||
+            afterAt.includes("ucsd.edu") ||
+            afterAt.includes("ucmerced.edu") ||
+            afterAt.includes("ucsb.edu") ||
+            afterAt.includes("ucdavis.edu")
+        ) {
+            return true
+        } else {
+            alert("Email must be from a University of California domain.")
+            return false
+        }
+    }
+
+    const validatePassword = (password) => {
+        if (
+            validator.isStrongPassword(password, {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+            })
+        ) {
+            return true
+        } else {
+            alert("Passwords need to be 8 characters with at least 1 lower, 1 upper, 1 number, and 1 special character")
+            return false
+        }
+    }
+    
     async function handleRegister(e) {
         e.preventDefault()
 
         const form = e.target
-        const user = {
-            email: form[4].value,
-            password: form[5].value
+        if (validatePassword(form[5].value) && validateEmail(form[4].value)) 
+            {
+            const user = {
+                first: form[0].value,
+                last: form[1].value,
+                school: form[2].value,
+                position: form[3].value,
+                email: form[4].value,
+                password: form[5].value
+            }
+    
+            fetch("http://localhost:8080/register", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(user)
+            })
+            .then(res => res.json())
+            .then(data => {
+                navigate("/signin")
+                console.log(data)
+            })
         }
-
-        fetch("http://localhost:8080/register", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-        .then(res => res.json())
-        .then(data => {
-            navigate("/")
-            console.log(data)
-        })
     }
 
     useEffect(() => {
@@ -47,24 +93,24 @@ export default function SignUpPage() {
                 </div>
                 <div className="dropdowns">
                     <select action="#" name="school" required>
-                        <option value="berkeley">Berkeley</option>
-                        <option value="davis">Davis</option>
-                        <option value="irvine">Irvine</option>
-                        <option value="merced">Merced</option>
-                        <option value="losangeles">Los Angeles</option>
-                        <option value="sandiego">San Diego</option>
-                        <option value="santabarbara">Santa Barbara</option>
-                        <option value="santacruz">Santa Cruz</option>
-                        <option value="riverside">Riverside</option>
+                        <option value="Berkeley">Berkeley</option>
+                        <option value="Davis">Davis</option>
+                        <option value="Irvine">Irvine</option>
+                        <option value="Merced">Merced</option>
+                        <option value="Los Angeles">Los Angeles</option>
+                        <option value="San Diego">San Diego</option>
+                        <option value="Santa Barbara">Santa Barbara</option>
+                        <option value="Santa Cruz">Santa Cruz</option>
+                        <option value="Riverside">Riverside</option>
                     </select>
                     <select name="position" required>
-                        <option value="freshman">Freshman</option>
-                        <option value="sophomore">Sophomore</option>
-                        <option value="junior">Junior</option>
-                        <option value="senior">Senior</option>
-                        <option value="supersenior">Super Senior</option>
-                        <option value="graduate">Graduate</option>
-                        <option value="faculty">Faculty</option>
+                        <option value="Freshman">Freshman</option>
+                        <option value="Sophomore">Sophomore</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Super Senior">Super Senior</option>
+                        <option value="Graduate">Graduate</option>
+                        <option value="Faculty">Faculty</option>
                     </select>
                 </div>
                 <input className="input" type="email" name="email" placeholder="Email" required />

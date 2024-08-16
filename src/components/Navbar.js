@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const navigate = useNavigate()
-    const [email, setEmail] = useState(null)
+    const [first, setFirst] = useState(null)
+    const [last, setLast] = useState(null)
 
     async function logout() {
         localStorage.removeItem("token")
@@ -18,8 +19,30 @@ export default function Navbar() {
             }
         })
         .then(res => res.json())
-        .then(data => data.isLoggedIn ? setEmail(data.email) : null)
-    }, [])
+        .then(data => {
+            if (data.isLoggedIn) {
+                setFirst(data.first.charAt(0).toUpperCase() + data.first.slice(1))
+                setLast(data.last.charAt(0).toUpperCase() + data.last.slice(1))
+            }
+    })}, [])
+
+    function toggleDropdown() {
+        document.getElementsByClassName("dropdownContent")[0].classList.toggle("show")
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.buttonIcon')) {
+            var dropdowns = document.getElementsByClassName("dropdownContent");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+      }
+    
 
     return (
         <nav>
@@ -28,10 +51,22 @@ export default function Navbar() {
                 <Link to="/topic/education">Education</Link>
                 <Link to="/topic/culture">Culture</Link>
             </div>
-            {email
-            ? <div>
-                <p>{email}</p>
-                <p onClick={logout}>Logout</p>
+            {first
+            ? <div className="accountMenu">
+                <p className="accountName">{first} {last}</p>
+                <div className="dropdownMenu">
+                    <button className="buttonIcon" onClick={toggleDropdown}>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
+                    </button>
+                    <div className="dropdownContent">
+                        <p onClick={logout}>Logout</p>
+                        <a href="#">link to profile posts </a>
+                        <a href="#">link to change profile info </a>
+                    </div>
+                </div>
+                
             </div>
             : <div className="signin">
                 <Link to="/signin">Sign In</Link>
