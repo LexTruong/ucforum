@@ -1,0 +1,45 @@
+.singlePostImage{
+    width: 80%;
+}
+
+.singlePostSummary{
+    font-size: 15px;
+}
+
+.singlePostTitle{
+}
+
+.singlePostImageGroup{
+    display:flex;
+    align-items: center;
+}
+
+.singlePostArticle{
+    font-size: 20px;
+}
+
+.singlePostAuthor{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.singlePost{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: left;
+    flex-wrap: wrap;
+    padding-left: 17%;
+    padding-right: 17%;
+}
+
+.singlePostThumbs{
+    flex-direction: row;
+    color: white;
+    background-color: #660066;
+    text-align: left;
+}
+
+.singlePostCommentTitle{
+    text-align: left;
+}

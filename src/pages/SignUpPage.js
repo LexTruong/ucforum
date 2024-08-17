@@ -68,8 +68,12 @@ export default function SignUpPage() {
             })
             .then(res => res.json())
             .then(data => {
-                navigate("/signin")
-                console.log(data)
+                if (data.message === "Taken Email") {
+                    alert("Email Taken Already")
+                    navigate(0)
+                } else {
+                    navigate("/signin")
+                }
             })
         }
     }

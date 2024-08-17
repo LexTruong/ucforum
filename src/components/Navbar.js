@@ -61,12 +61,12 @@ export default function Navbar() {
                         <div className="bar"></div>
                     </button>
                     <div className="dropdownContent">
-                        <p onClick={logout}>Logout</p>
-                        <a href="#">link to profile posts </a>
-                        <a href="#">link to change profile info </a>
+                        <Link to="/create">Write Article</Link>
+                        <Link to="/">View Past Posts</Link>
+                        <Link to="/">Manage Account</Link>
+                        <a href="/" onClick={logout}>Logout</a>
                     </div>
                 </div>
-                
             </div>
             : <div className="signin">
                 <Link to="/signin">Sign In</Link>

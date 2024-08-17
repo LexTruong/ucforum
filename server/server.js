@@ -6,7 +6,8 @@ const app = express();
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const User = require("./models/user")
+const User = require("./models/User");
+const Post = require('./models/post');
 const encryptionKey= "H1Dwau7adhaWDH765928jjHWH"
 
 // middleware
@@ -21,7 +22,7 @@ const dbURI = "mongodb+srv://lextruong:BjcZCcvL4Q5ijs32@cluster0.705zh.mongodb.n
 
 mongoose.connect(dbURI)
 
-// routes
+// create new account and add to database
 app.post("/register", async (req, res) => {
     const user = req.body;
 
@@ -29,7 +30,7 @@ app.post("/register", async (req, res) => {
     const takenEmail = await User.findOne({email: user.email})
     
     if (takenEmail) {
-        res.json({message:"Taken"})
+        res.json({message: "Taken Email"})
     } else {
         encryptedPassword = await bcrypt.hash(req.body.password, 10)
 
@@ -47,13 +48,14 @@ app.post("/register", async (req, res) => {
     }
 })
 
+// login user and return unique token
 app.post("/login", (req, res) => {
     const userLoggingIn = req.body;
 
     User.findOne({email: userLoggingIn.email})
     .then(dbUser => {
         if (!dbUser) {
-            return res.json({message:"Invalid"})
+            return res.json({message:"Invalid Email"})
         }
         bcrypt.compare(userLoggingIn.password, dbUser.password)
         .then(isCorrect => {
@@ -78,7 +80,7 @@ app.post("/login", (req, res) => {
             }
             else {
                 return res.json({
-                    message: "invalid"
+                    message: "Invalid Password"
                 })
             }
         })
@@ -106,6 +108,7 @@ function verifyJWT(req, res, next) {
     }
 }
 
+// check if user has valid token
 app.get("/isUserAuth", verifyJWT, (req, res) => {
     res.json({
         isLoggedIn:true,
@@ -113,5 +116,43 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
         last: req.user.last
     })
 })
+
+// create new post and add to database
+app.post('/post', verifyJWT, (req, res) => {
+    const postInfo = req.body
+
+    // author is the id corresponding to a user in the database
+    // can use to get user info from database
+    const postDoc = new Post({
+        title: postInfo.title,
+        summary: postInfo.summary,
+        content: postInfo.content,
+        file: "temporary file",
+        author: req.user.id
+    })
+
+    postDoc.save()
+    res.json("Post Created")
+})
+
+// get all posts
+app.get('/posts', async (req, res) => {
+    const posts = await Post.find()
+
+    res.json(posts)
+})
+
+// get single post
+app.get('/post/:id', async (req, res) => {
+    const {id} = req.params
+    const post = await Post.findById(id)
+    res.json(post)
+})
+
+// update post
+
+
+// update account
+
 
 app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'));

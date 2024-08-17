@@ -23,10 +23,19 @@ export default function SignInPage() {
         })
         .then(res => res.json())
         .then(data => {
-            localStorage.setItem("token", data.token)
-            navigate("/")
-            navigate(0)
-            console.log(data)
+            if(data.message === "Invalid Email") {
+                alert("Invalid Email")
+                navigate(0)
+            }
+            else if(data.message === "Invalid Password") {
+                alert("Invalid Password")
+                navigate(0)
+            }
+            else {
+                localStorage.setItem("token", data.token)
+                navigate("/")
+                navigate(0)
+            }
         })
     }
 

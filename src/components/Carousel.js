@@ -21,16 +21,16 @@ const responsive = {
     }
   }
 
-export default function PostCarousel() {
-    return(
-        <div className="carouselcontainer">
-            <Carousel responsive={responsive} className="carousel" itemClass="item">
-                <PostCard className="card"/>
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-            </Carousel>
-        </div>
+export default function PostCarousel({posts}) {
+  // posts is a list of post objects
+  return(
+      <div className="carouselcontainer">
+          <Carousel responsive={responsive} className="carousel" itemClass="item">
+              {posts.length > 0 && posts.map(post => (
+                <PostCard {...post} />
+              ))}
+          </Carousel>
+          
+      </div>
     )
 }
