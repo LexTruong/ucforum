@@ -11,7 +11,7 @@ h3{
 .footercontent{
     display: flex;
     justify-content: space-between;
-    padding: 10px 100px;
+    margin: 10px 100px;
 }
 
 .footertopics{
@@ -42,9 +42,14 @@ p{
 
 
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 680px) {
     .footercontent{
         flex-direction: column;
         gap: 20px;
+        margin: 10px 50px;
+    }
+
+    h3{
+        padding: 0 50px;
     }
 }

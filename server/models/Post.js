@@ -13,11 +13,19 @@ const postSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    topic: {
+        type: String,
+        required: true
+    },
     file: {
         type: String,
         required: true
     },
-    author: {
+    caption: {
+        type: String,
+        required: true
+    },
+    authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     }

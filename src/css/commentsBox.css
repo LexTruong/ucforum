@@ -1,0 +1,25 @@
+.commentsBox{
+    border: 1;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.subComments{
+    display:flex;
+    flex-direction: column;
+    border-style: solid;
+    border-color: tan;
+    gap: 6px;
+}
+
+.replyButton {
+    border-radius: 10px;
+    width: 30%;
+    border-color: mediumaquamarine
+}
+
+.cancelButton {
+    border-radius: 10px;
+    width: 30%;
+    border-color: red;
+}

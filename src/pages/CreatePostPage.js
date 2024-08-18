@@ -26,16 +26,22 @@ export default function CreatePostPage() {
     const [title, setTitle] = useState("")
     const [summary, setSummary] = useState("")
     const [content, setContent] = useState("")
+    const [topic, setTopic] = useState("temp")
     const [files, setFiles] = useState("")
+    const [caption, setCaption] = useState("")
 
     async function createPost(e) {
         e.preventDefault()
 
+        const form = e.target;
+        
         const data = {
             title,
             summary,
             content,
-            file: files[0]
+            topic: form[1].value,
+            file: files[0],
+            caption
         }
 
         fetch("http://localhost:8080/post", {
@@ -61,14 +67,23 @@ export default function CreatePostPage() {
             <form className="postInfo" onSubmit={e => createPost(e)}>
                 <input type="text" className="postTitle" placeholder="Title" 
                     onChange={e => setTitle(e.target.value)} />
+                <h3 className="articleTopicLabel">Article Topic</h3>
+                <select name="topic" required >
+                        <option value="Politics">Politics</option>
+                        <option value="Education">Education</option>
+                        <option value="Culture">Culture</option>
+                    </select>
                 <textarea wrap="hard" type="text" className="postSummary"  
                     placeholder="Summarize your article into 1-2 sentences for readers." 
                     onChange={e => setSummary(e.target.value)} />
                 <div className="imageInput">
-                    <label className="imageLabel" for="mainImage">Main Image </label>
+                    <p className="imageLabel">Cover Image </p>
                     <input type="file" className="postImage" name="mainImage"
                         onChange={e => setFiles(e.target.files)}/>
                 </div>
+                <textarea wrap="hard" type="text" className="imageCaption"  
+                    placeholder="Image Caption" 
+                    onChange={e => setCaption(e.target.value)} />
 
                 <div className="editorContainer">
                 <h3 className="articleTextLabel">Article Text</h3>

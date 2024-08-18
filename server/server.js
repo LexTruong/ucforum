@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 const User = require("./models/User");
-const Post = require('./models/post');
-const encryptionKey= "H1Dwau7adhaWDH765928jjHWH"
+const Post = require('./models/Post');
+const encryptionKey = "H1Dwau7adhaWDH765928jjHWH"
 
 // middleware
 const urlencodedParser = bodyParser.urlencoded({extended: false})
@@ -127,8 +127,10 @@ app.post('/post', verifyJWT, (req, res) => {
         title: postInfo.title,
         summary: postInfo.summary,
         content: postInfo.content,
+        topic: postInfo.topic,
         file: "temporary file",
-        author: req.user.id
+        caption: postInfo.caption,
+        authorId: req.user.id
     })
 
     postDoc.save()
@@ -137,7 +139,7 @@ app.post('/post', verifyJWT, (req, res) => {
 
 // get all posts
 app.get('/posts', async (req, res) => {
-    const posts = await Post.find()
+    const posts = await Post.find().populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
 
     res.json(posts)
 })
@@ -145,7 +147,7 @@ app.get('/posts', async (req, res) => {
 // get single post
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params
-    const post = await Post.findById(id)
+    const post = await Post.findById(id).populate('authorId', ['first', 'last', 'email', 'school', 'position'])
     res.json(post)
 })
 
@@ -155,4 +157,4 @@ app.get('/post/:id', async (req, res) => {
 // update account
 
 
-app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'));
+app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'))

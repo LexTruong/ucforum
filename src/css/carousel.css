@@ -7,3 +7,9 @@
     background-color: grey;
     opacity: 60%;
 }
+
+@media screen and (max-width: 680px) {
+    .carouselcontainer{
+        padding: 10px 40px;
+    }
+}
