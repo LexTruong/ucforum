@@ -5,6 +5,8 @@ const bodyParser = require("body-parser")
 const app = express();
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const multer = require('multer')
+const path = require('path')
 
 const User = require("./models/User");
 const Post = require('./models/Post');
@@ -12,6 +14,18 @@ const encryptionKey = "H1Dwau7adhaWDH765928jjHWH"
 
 // middleware
 const urlencodedParser = bodyParser.urlencoded({extended: false})
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({storage: storage})
+
+app.use(express.static(__dirname + '/uploads'))
 app.use(bodyParser.json(), urlencodedParser)
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 
@@ -111,30 +125,40 @@ function verifyJWT(req, res, next) {
 // check if user has valid token
 app.get("/isUserAuth", verifyJWT, (req, res) => {
     res.json({
-        isLoggedIn:true,
+        isLoggedIn: true,
         first: req.user.first,
         last: req.user.last
     })
 })
 
 // create new post and add to database
-app.post('/post', verifyJWT, (req, res) => {
+// takes a FormData object as body
+app.post('/post', verifyJWT, upload.single('file'), async (req, res) => {
     const postInfo = req.body
 
     // author is the id corresponding to a user in the database
     // can use to get user info from database
-    const postDoc = new Post({
-        title: postInfo.title,
-        summary: postInfo.summary,
-        content: postInfo.content,
-        topic: postInfo.topic,
-        file: "temporary file",
-        caption: postInfo.caption,
-        authorId: req.user.id
-    })
+    try {
+        const postDoc = new Post({
+            title: postInfo.title,
+            summary: postInfo.summary,
+            content: postInfo.content,
+            topic: postInfo.topic,
+            file: req.file.filename,
+            caption: postInfo.caption,
+            authorId: req.user.id
+        })
 
-    postDoc.save()
-    res.json("Post Created")
+        await postDoc.save()
+        res.json("Post Created")
+    } catch(error) {
+        res.status(400)
+        if (error.name === "ValidationError") {
+            res.json("Missing Info")
+        } else {
+            res.json(error.message)
+        }
+    }
 })
 
 // get all posts

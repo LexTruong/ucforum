@@ -11,7 +11,7 @@ import TopicPage from "./pages/TopicPage"
 import ViewPostPage from "./pages/ViewPostPage"
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
-import Comments from './pages/Comments';
+import Comments from './Comments/Comments';
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
             <Route path="/topic/:name" element={<TopicPage/>} />
             <Route path="/post/:id" element={<ViewPostPage/>} />
             <Route path="/user/:id" element={<ProfilePage />} />
-            <Route path="/comments" element={<Comments/>}/>
+            <Route path="/comments" element={<Comments currentUserId="1"/>}/>
         </Route>
     </Routes>
   );

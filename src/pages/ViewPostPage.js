@@ -22,6 +22,8 @@ export default function ViewPostPage() {
 
             const date = new Date(postInfo.createdAt)
             setDate(date.toDateString())
+
+            console.log(postInfo.file)
         })
 
     }, [])
@@ -33,7 +35,7 @@ export default function ViewPostPage() {
     return (
         <div className="singlePostContainer">
             <div className="singlePostText singlePostInfo">
-                <Link to="/" className="singlePostTopic">Topic</Link>
+                <Link to="/" className="singlePostTopic">{postInfo.topic}</Link>
                 <h1 className="singlePostTitle">{postInfo.title}</h1>
                 <p className="singlePostSummary">{postInfo.summary}</p>
                 <p className="singlePostAuthor">By {username}, {postInfo.authorId.school} {postInfo.authorId.position}</p>
@@ -41,7 +43,7 @@ export default function ViewPostPage() {
             </div>
             
             <div className="singlePostImageContainer">
-                <img src={yosemite} className="singlePostImage" alt="placeholder"></img>
+                <img src={`http://localhost:8080/${postInfo.file}`} className="singlePostImage" alt="placeholder"></img>
                 <p className="singlePostCaption">{postInfo.caption}</p>
             </div>
 
