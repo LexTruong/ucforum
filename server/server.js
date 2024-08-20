@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
+        // check if file is an image file
         cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
     }
 })
@@ -164,6 +165,17 @@ app.post('/post', verifyJWT, upload.single('file'), async (req, res) => {
 // get all posts
 app.get('/posts', async (req, res) => {
     const posts = await Post.find().populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
+
+    res.json(posts)
+})
+
+// get all posts of a topic
+app.get('/topic/:name', async (req, res) => {
+    const {name} = req.params
+    
+    const topic = name.charAt(0).toUpperCase() + name.slice(1)
+
+    const posts = await Post.find({ topic: topic }).populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
 
     res.json(posts)
 })

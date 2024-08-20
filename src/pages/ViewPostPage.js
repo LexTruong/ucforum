@@ -1,4 +1,3 @@
-import yosemite from "../images/yosemite.jpg"
 import "../css/viewPostPage.css"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
@@ -22,11 +21,9 @@ export default function ViewPostPage() {
 
             const date = new Date(postInfo.createdAt)
             setDate(date.toDateString())
-
-            console.log(postInfo.file)
         })
 
-    }, [])
+    }, [id])
     
     if (!postInfo) return 'Post Unavailable'
 

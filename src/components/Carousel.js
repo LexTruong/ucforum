@@ -28,8 +28,8 @@ export default function PostCarousel({posts}) {
   return(
       <div className="carouselcontainer">
           <Carousel responsive={responsive} className="carousel" itemClass="item">
-              {posts.length > 0 && posts.map(post => (
-                <PostCard {...post} />
+              {posts.length > 0 && posts.map((post, i) => (
+                <PostCard {...post} key={i} />
               ))}
           </Carousel>
           

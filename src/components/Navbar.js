@@ -23,7 +23,7 @@ export default function Navbar() {
             if (data.isLoggedIn) {
                 setFirst(data.first.charAt(0).toUpperCase() + data.first.slice(1))
                 setLast(data.last.charAt(0).toUpperCase() + data.last.slice(1))
-            }
+            } 
     })}, [])
 
     function toggleDropdown() {

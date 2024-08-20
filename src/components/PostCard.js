@@ -1,4 +1,3 @@
-import yosemite from "../images/yosemite.jpg"
 import "../css/postCard.css"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
@@ -16,7 +15,7 @@ export default function PostCard({_id, title, summary,
 
         const date = new Date(createdAt)
         setDate(date.toDateString())
-    })
+    }, [authorId, createdAt])
 
     return (
         <div className="cardcontainer">
