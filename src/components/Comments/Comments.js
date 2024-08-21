@@ -4,22 +4,45 @@ import Comment from './Comment'
 import CommentForm from './CommentForm'  
 
 
-export default function Comments() {
+export default function Comments({id}) {
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
-    const rootComments = backendComments.filter(backendComments => backendComments.parentId == null)
+    const [rootComments, setRootComments] = useState([])
+
+    // get comments
+    useEffect(() => {
+        fetch(`http://localhost:8080/comments/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            setBackendComments(data)
+            const roots = data.filter(comment => comment.parentId === null)
+            setRootComments(roots)
+        }) 
+    }, [id])
     
     const getReplies = commentId => {
         return backendComments.filter(backendComment => backendComment.parentId == commentId)
         .sort((a, b) => new Date(a.createdAt).getTime()-new Date(b.createdAt).getTime())
     }
     
-    const addComment = (text, parentId) => {
-        console.log('addComment', text, parentId)
-        createCommentApi(text, parentId).then(comment => {
-            setBackendComments([comment, ...backendComments])
-            setActiveComment(null)
+    const addComment = (text, parent) => {
+        const data = {
+            body: text,
+            parent: parent
+        }
+
+        fetch(`http://localhost:8080/addcomment/${id}`, {
+            method: 'POST',
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(data)
         })
+        .then(res => res.json())
+        .then(data => console.log(data))
+
+        setActiveComment(null)
     }
 
     const deleteComment = (commentId) => {
@@ -45,30 +68,26 @@ export default function Comments() {
         })
     }
 
-    useEffect(() => {
-        getCommentsApi().then(data => {
-            setBackendComments(data);
-        })
-    }, [])
-
     return (
         <div>
-            <h3> Comments </h3>
             <div> Write Comment</div>
             <CommentForm submitLabel="Write" handleSubmit={addComment}/>
             <div>
-                {rootComments.map(rootComment =>
-                    <Comment 
-                    key={rootComment.id} 
-                    comment={rootComment} 
-                    replies={getReplies(rootComment.id)}
-                    currentUserId = {1}
-                    deleteComment = {deleteComment}
-                    activeComment = {activeComment}
-                    updateComment = {updateComment}
-                    setActiveComment = {setActiveComment}
-                    addComment = {addComment}
-                    />
+                {rootComments.map(rootComment => (
+                    <p>{rootComment.authorId.first} - {rootComment.body}</p>
+                    // <Comment 
+                    // key={rootComment.id} 
+                    // comment={rootComment} 
+                    // replies={getReplies(rootComment.id)}
+                    // currentUserId = {1}
+                    // deleteComment = {deleteComment}
+                    // activeComment = {activeComment}
+                    // updateComment = {updateComment}
+                    // setActiveComment = {setActiveComment}
+                    // addComment = {addComment}
+                    // />
+                )
+                    
                 )}
             </div>
         </div>

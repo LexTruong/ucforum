@@ -1,6 +1,7 @@
 import "../css/viewPostPage.css"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import Comments from "../components/Comments/Comments"
 
 
 export default function ViewPostPage() {
@@ -25,9 +26,8 @@ export default function ViewPostPage() {
 
     }, [id])
     
+    
     if (!postInfo) return 'Post Unavailable'
-
-    // implement comments functionality
 
     return (
         <div className="singlePostContainer">
@@ -49,12 +49,15 @@ export default function ViewPostPage() {
             </div>
             
 
-            <div className="comments">
+            <div className="commentsContainer">
                 <div className="singlePostThumbs">
                     <button className="singlePostThumbs"> ^ 500</button>
                     <button className="singlePostThumbs"> ⌄ 500</button>
                 </div>
                 <h2 className="singlePostCommentTitle"> # of Comments</h2>
+                <div className="comments">
+                    <Comments id={id}></Comments>
+                </div>
             </div>
         </div>
     )

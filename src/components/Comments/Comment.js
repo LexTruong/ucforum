@@ -4,7 +4,6 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
     const canReply = Boolean(currentUserId)
     const canEdit = currentUserId //=== comment.userId
     const canDelete = currentUserId //=== comment.userId
-    const createdAt = new Date(comment.createdAt).toLocaleDateString()
     const isReplying = activeComment && 
         activeComment.type === "replying" && 
         activeComment.id === comment.id
@@ -17,7 +16,6 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
         <div>
             <div> 
                 <div>{comment.username}</div>
-                <div> {createdAt}</div>
             </div>
             {!isEditing && <div>{comment.body}</div>}
             {isEditing && (

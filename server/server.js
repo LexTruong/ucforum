@@ -194,10 +194,36 @@ app.get('/post/:id', async (req, res) => {
 
 
 // get all comments for a post
-
+app.get('/comments/:id', async (req, res) => {
+    const {id} = req.params
+    const post = await Post.findById(id).populate({
+        path: 'comments',
+        populate: {
+            path: 'authorId',
+            model: 'User'
+        }
+    })
+    const comments = post.comments
+    res.json(comments)
+})
 
 // make a new comment
+app.post('/addcomment/:id', verifyJWT, async (req, res) => {
+    const {id} = req.params
+    const data = req.body
 
+    const comment = {
+        body: data.body,
+        authorId: req.user.id,
+        parentId: data.parent
+    }
+
+    const postDoc = await Post.findById(id)
+    postDoc.comments.push(comment)
+    await postDoc.save()
+
+    res.json("Added Comment")
+})
 
 // update a comment
 
