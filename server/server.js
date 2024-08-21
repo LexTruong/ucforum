@@ -193,4 +193,20 @@ app.get('/post/:id', async (req, res) => {
 // update account
 
 
+// get all comments for a post
+
+
+// make a new comment
+
+
+// update a comment
+
+
+// reply to a comment
+
+
+// delete a comment
+
+
+
 app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'))

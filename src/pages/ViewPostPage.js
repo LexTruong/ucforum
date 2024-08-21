@@ -32,7 +32,7 @@ export default function ViewPostPage() {
     return (
         <div className="singlePostContainer">
             <div className="singlePostText singlePostInfo">
-                <Link to="/" className="singlePostTopic">{postInfo.topic}</Link>
+                <Link to={`/topic/${postInfo.topic}`} className="singlePostTopic">{postInfo.topic}</Link>
                 <h1 className="singlePostTitle">{postInfo.title}</h1>
                 <p className="singlePostSummary">{postInfo.summary}</p>
                 <p className="singlePostAuthor">By {username}, {postInfo.authorId.school} {postInfo.authorId.position}</p>

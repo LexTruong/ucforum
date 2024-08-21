@@ -11,23 +11,23 @@ import TopicPage from "./pages/TopicPage"
 import ViewPostPage from "./pages/ViewPostPage"
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
-import Comments from './Comments/Comments';
+import Comments from './components/Comments/Comments';
 
 function App() {
 
   return (
     <Routes>
         <Route path="/" element={<Layout/>}>
-            <Route index path="/" element={<HomePage/>} />
-            <Route path="/about" element={<AboutPage/>} />
+            <Route index path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/create" element={<CreatePostPage/>} />
-            <Route path="/signin" element={<SignInPage/>} />
-            <Route path="/signup" element={<SignUpPage/>} />
-            <Route path="/edit/:id" element={<EditPostPage/>} />
-            <Route path="/topic/:name" element={<TopicPage/>} />
-            <Route path="/post/:id" element={<ViewPostPage/>} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/edit/:id" element={<EditPostPage />} />
+            <Route path="/topic/:name" element={<TopicPage />} />
+            <Route path="/post/:id" element={<ViewPostPage />} />
             <Route path="/user/:id" element={<ProfilePage />} />
-            <Route path="/comments" element={<Comments currentUserId="1"/>}/>
+            <Route path="/comments" element={<Comments />}/>
         </Route>
     </Routes>
   );

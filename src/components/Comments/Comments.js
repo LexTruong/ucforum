@@ -1,11 +1,12 @@
-import {useState, useEffect} from "react";
-import {getComments as getCommentsApi, createComment as createCommentApi, deleteComment as deleteCommentAPi} from '../api'
+import {useState, useEffect} from "react";  
+import {getComments as getCommentsApi, createComment as createCommentApi, deleteComment as deleteCommentApi, updateComment as updateCommentApi} from '../../api'
 import Comment from './Comment'
-import CommentForm from './CommentForm'
+import CommentForm from './CommentForm'  
 
 
-export default function Comments(currentUserId) {
+export default function Comments() {
     const [backendComments, setBackendComments] = useState([])
+    const [activeComment, setActiveComment] = useState(null)
     const rootComments = backendComments.filter(backendComments => backendComments.parentId == null)
     
     const getReplies = commentId => {
@@ -17,17 +18,31 @@ export default function Comments(currentUserId) {
         console.log('addComment', text, parentId)
         createCommentApi(text, parentId).then(comment => {
             setBackendComments([comment, ...backendComments])
+            setActiveComment(null)
         })
     }
 
     const deleteComment = (commentId) => {
         if(window.confirm("Are you sure delete yes?")) {
-            deleteCommentAPi(commentId).then(() => {
+            deleteCommentApi(commentId).then(() => {
                 const updateBackendComments = backendComments.filter(
                     (backendComment) => backendComment.id !== commentId)
                 setBackendComments(updateBackendComments)
             })
         }
+    }
+
+    const updateComment = (text, commentId) => {
+        updateCommentApi(text, commentId).then(() => {
+            const updatedBackendComments = backendComments.map(backendComment => {
+                if (backendComment.id === commentId) {
+                    return {...backendComment, body: text}
+                }
+                return backendComment
+            })
+            setBackendComments(updatedBackendComments)
+            setActiveComment(null)
+        })
     }
 
     useEffect(() => {
@@ -47,8 +62,12 @@ export default function Comments(currentUserId) {
                     key={rootComment.id} 
                     comment={rootComment} 
                     replies={getReplies(rootComment.id)}
-                    currentUserId = {currentUserId}
+                    currentUserId = {1}
                     deleteComment = {deleteComment}
+                    activeComment = {activeComment}
+                    updateComment = {updateComment}
+                    setActiveComment = {setActiveComment}
+                    addComment = {addComment}
                     />
                 )}
             </div>

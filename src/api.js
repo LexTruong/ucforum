@@ -1,4 +1,4 @@
-export const getComments = async () => {
+export const getComments = async () => { 
     return [
       {
         id: "1",

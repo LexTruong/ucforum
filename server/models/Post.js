@@ -1,5 +1,20 @@
 const mongoose = require("mongoose")
 
+const commentSchema = mongoose.Schema({
+    body: {
+        type: String,
+        required: true
+    },
+    authorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    parentId: {
+        type: String,
+        default: null
+    }
+})
+
 const postSchema = mongoose.Schema({
     title: {
         type: String,
@@ -28,6 +43,9 @@ const postSchema = mongoose.Schema({
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
+    },
+    comments: {
+        type: [commentSchema]
     }
 }, {timestamps: true})
 

@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {useState} from 'react';   
 
-export default function CommentForm({handleSubmit, submitLabel}) {
-    const [text, setText] = useState("")
+export default function CommentForm({handleSubmit, submitLabel, hasCancelButton = false, initialText = '', handleCancel}) {
+    const [text, setText] = useState(initialText)
     const isTextareaDisabled = text.length == 0;
     const onSubmit = event => {
         event.preventDefault()
@@ -14,7 +14,10 @@ export default function CommentForm({handleSubmit, submitLabel}) {
                 <textarea placeholder="Write a Comment!" 
                 value={text} onChange={(e) => setText(e.target.value)}/>
                 <button disabled = {isTextareaDisabled}>{submitLabel}</button>
+                {hasCancelButton && (
+                    <button type="button" onClick={handleCancel}> Cancel </button>
+                )}
             </form>
-        </div>
+        </div> 
     )
 }
