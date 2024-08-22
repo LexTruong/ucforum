@@ -1,16 +1,21 @@
 import CommentForm from "./CommentForm"  
 
-export default function Comment({comment, replies, currentUserId, deleteComment, activeComment, setActiveComment, parentId = null, addComment, updateComment}) {
+export default function Comment({comment, replies, currentUserId, deleteComment, activeComment, setActiveComment, parentId = null, addComment, updateComment, getReplies}) {
     const canReply = Boolean(currentUserId)
-    const canEdit = currentUserId //=== comment.userId
-    const canDelete = currentUserId //=== comment.userId
+    const canEdit = currentUserId  // === comment.userId
+    const canDelete = currentUserId  // === comment.userId
     const isReplying = activeComment && 
         activeComment.type === "replying" && 
-        activeComment.id === comment.id
+        activeComment._id === comment._id
     const isEditing = activeComment && 
         activeComment.type === "editing" && 
-        activeComment.id === comment.id
-    const replyId = parentId ? parentId : comment.id
+        activeComment._id === comment._id
+
+    // const replyId = parentId ? parentId : comment._id
+    if (!parentId) {
+        parentId = comment._id
+    }
+
 
     return (
         <div>
@@ -23,7 +28,7 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
                 submitLabel="Update"
                 hasCancelButton 
                 initialText={comment.body}
-                handleSubmit={(text) => updateComment(text, comment.id)}
+                handleSubmit={(text) => updateComment(text, comment._id)}
                 handleCancel={() => setActiveComment(null)}
                 />
             )}
@@ -31,31 +36,33 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
                 {canReply && (
                     <div 
                     onClick={() => 
-                    setActiveComment({id: comment.id, type: "replying"}) }> Reply </div>)}
+                    setActiveComment({_id: comment._id, type: "replying"}) }> Reply </div>)}
                 {canEdit && (
                     <div 
                     onClick={() => 
-                    setActiveComment({id: comment.id, type: "editing"}) }> Edit </div>)}
-                {canDelete && (<div onClick={() => deleteComment(comment.id)}> Delete </div>)}
+                    setActiveComment({_id: comment._id, type: "editing"}) }> Edit </div>)}
+                {canDelete && (<div onClick={() => deleteComment(comment._id)}> Delete </div>)}
             </div>
              {isReplying && (
                 <CommentForm
                     submitLabel="Reply" 
-                    handleSubmit={(text) => addComment(text, replyId)}
+                    // pass comment._id as parentId
+                    handleSubmit={(text) => addComment(text, comment._id)}
                 /> 
             )}
             {replies.length > 0 && (
                 <div>
                     {replies.map(reply => (
-                        <Comment comment={reply} key={reply.id}
+                        <Comment comment={reply} key={reply._id}
                         currentUserId = {currentUserId}
                         deleteComment = {deleteComment}
                         addComment={addComment}
                         updateComment = {updateComment}
-                        parentId = {comment.id}
-                        replies={[]}
+                        parentId = {comment._id}
+                        replies={getReplies(reply._id)}
                         activeComment={activeComment}
                         setActiveComment = {setActiveComment}
+                        getReplies={getReplies}
                         />
                     ))}
                 </div>

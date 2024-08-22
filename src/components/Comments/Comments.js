@@ -2,9 +2,11 @@ import {useState, useEffect} from "react";
 import {getComments as getCommentsApi, createComment as createCommentApi, deleteComment as deleteCommentApi, updateComment as updateCommentApi} from '../../api'
 import Comment from './Comment'
 import CommentForm from './CommentForm'  
+import { useNavigate } from "react-router-dom";
 
 
 export default function Comments({id}) {
+    const navigate = useNavigate()
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
     const [rootComments, setRootComments] = useState([])
@@ -15,11 +17,13 @@ export default function Comments({id}) {
         .then(res => res.json())
         .then(data => {
             setBackendComments(data)
+            console.log(data)
             const roots = data.filter(comment => comment.parentId === null)
             setRootComments(roots)
         }) 
     }, [id])
     
+    // get replies for each root comment
     const getReplies = commentId => {
         return backendComments.filter(backendComment => backendComment.parentId == commentId)
         .sort((a, b) => new Date(a.createdAt).getTime()-new Date(b.createdAt).getTime())
@@ -43,13 +47,22 @@ export default function Comments({id}) {
         .then(data => console.log(data))
 
         setActiveComment(null)
+        navigate(0)
     }
+
+    // fetch current user ID and pass in as parameter to each comment
+    // compare current user ID with authorId of each comment to check
+    //     whether to display edit and delete buttons
+
+    // where is the handleCancel function?
+
+    // move delete, update functions to comment
 
     const deleteComment = (commentId) => {
         if(window.confirm("Are you sure delete yes?")) {
             deleteCommentApi(commentId).then(() => {
                 const updateBackendComments = backendComments.filter(
-                    (backendComment) => backendComment.id !== commentId)
+                    (backendComment) => backendComment._id !== commentId)
                 setBackendComments(updateBackendComments)
             })
         }
@@ -58,7 +71,7 @@ export default function Comments({id}) {
     const updateComment = (text, commentId) => {
         updateCommentApi(text, commentId).then(() => {
             const updatedBackendComments = backendComments.map(backendComment => {
-                if (backendComment.id === commentId) {
+                if (backendComment._id === commentId) {
                     return {...backendComment, body: text}
                 }
                 return backendComment
@@ -74,18 +87,18 @@ export default function Comments({id}) {
             <CommentForm submitLabel="Write" handleSubmit={addComment}/>
             <div>
                 {rootComments.map(rootComment => (
-                    <p>{rootComment.authorId.first} - {rootComment.body}</p>
-                    // <Comment 
-                    // key={rootComment.id} 
-                    // comment={rootComment} 
-                    // replies={getReplies(rootComment.id)}
-                    // currentUserId = {1}
-                    // deleteComment = {deleteComment}
-                    // activeComment = {activeComment}
-                    // updateComment = {updateComment}
-                    // setActiveComment = {setActiveComment}
-                    // addComment = {addComment}
-                    // />
+                    <Comment 
+                    key={rootComment._id} 
+                    comment={rootComment} 
+                    replies={getReplies(rootComment._id)}
+                    currentUserId = {1}
+                    deleteComment = {deleteComment}
+                    activeComment = {activeComment}
+                    updateComment = {updateComment}
+                    setActiveComment = {setActiveComment}
+                    addComment = {addComment}
+                    getReplies = {getReplies}
+                    />
                 )
                     
                 )}

@@ -25,6 +25,8 @@ export default function ViewPostPage() {
         })
 
     }, [id])
+
+    
     
     
     if (!postInfo) return 'Post Unavailable'

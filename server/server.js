@@ -108,7 +108,7 @@ function verifyJWT(req, res, next) {
     if (token) {
         jwt.verify(token, encryptionKey, (err, decoded) => {
             if (err) return res.json({
-                isLoggedIn:false,
+                isLoggedIn: false,
                 message: "auth failed"
             })
             req.user = {};
@@ -207,7 +207,7 @@ app.get('/comments/:id', async (req, res) => {
     res.json(comments)
 })
 
-// make a new comment
+// make a new comment or reply to a comment
 app.post('/addcomment/:id', verifyJWT, async (req, res) => {
     const {id} = req.params
     const data = req.body
@@ -226,10 +226,6 @@ app.post('/addcomment/:id', verifyJWT, async (req, res) => {
 })
 
 // update a comment
-
-
-// reply to a comment
-
 
 // delete a comment
 
