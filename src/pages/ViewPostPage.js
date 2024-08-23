@@ -8,6 +8,7 @@ export default function ViewPostPage() {
     const [postInfo, setPostInfo] = useState(null)
     const [username, setUsername] = useState("")
     const [date, setDate] = useState("")
+    const [userId, setUserId] = useState(null)
     const {id} = useParams()
 
     useEffect(() => {
@@ -25,10 +26,21 @@ export default function ViewPostPage() {
         })
 
     }, [id])
+    
+    // fetch current user ID to see if user can edit article
+    useEffect(() => {
+        fetch('http://localhost:8080/isUserAuth', {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+                "Content-type": "application/json"
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            setUserId(data.userId)
+        })
+    }, [])
 
-    
-    
-    
     if (!postInfo) return 'Post Unavailable'
 
     return (
@@ -40,6 +52,9 @@ export default function ViewPostPage() {
                 <p className="singlePostAuthor">By {username}, {postInfo.authorId.school} {postInfo.authorId.position}</p>
                 <p className="singlePostDate">{date}</p>
             </div>
+            {postInfo.authorId._id == userId && (
+                <Link to={`/edit/${id}`}> UPDATE POST</Link>
+            )}
             
             <div className="singlePostImageContainer">
                 <img src={`http://localhost:8080/${postInfo.file}`} className="singlePostImage" alt="placeholder"></img>

@@ -96,7 +96,6 @@ export default function CreatePostPage() {
                 </div>
                 <input type="submit" className="postButton" value='Post Article' />
             </form>
-
         </div>
     )
 }

@@ -13,10 +13,14 @@ export default function CommentForm({handleSubmit, submitLabel, hasCancelButton 
             <form onSubmit={onSubmit} className="commentForm">
                 <input className="commentsTextArea" placeholder={placeholder}
                 value={text} onChange={(e) => setText(e.target.value)}/>
-                <button disabled={isTextareaDisabled} className="submitComment">{submitLabel}</button>
-                {hasCancelButton && (
-                    <button type="button" onClick={handleCancel} >Cancel</button>
-                )}
+                <div className="commentFormButtons">
+                    {hasCancelButton && (
+                        <button type="button" onClick={handleCancel} className="cancelComment">Cancel</button>
+                    )}
+                    <button disabled={isTextareaDisabled} className="submitComment">{submitLabel}</button>
+                    
+                </div>
+                
             </form>
         </div> 
     )

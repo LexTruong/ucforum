@@ -17,6 +17,18 @@
     font-weight: 600;
 }
 
+.replyAction {
+    cursor: pointer;
+}
+
+.editAction {
+    cursor: pointer;
+}
+
+.deleteAction {
+    cursor: pointer;
+}
+
 .commentAuthorInfo{
     display: flex;
     gap: 12px;
@@ -46,4 +58,41 @@
     background: none;
     padding-left: 20px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.commentFormButtons{
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+    padding-top: 5px;
+}
+
+.cancelComment, .submitComment{
+    padding: 5px 10px;
+    border-radius: 25px;
+    border: none;
+}
+
+.cancelComment{
+    background-color: lightgrey;
+}
+
+.submitComment{
+    background-color: #BE29EC;
+    color: white;
+}
+
+.cancelComment:hover{
+    background-color: rgb(200, 197, 197);
+}
+
+.submitComment:hover{
+    background-color: #b114e0;
+}
+
+.signComment{
+    width: 100%;
+    border-bottom: 1px black solid;
+    padding-bottom: 5px;
 }

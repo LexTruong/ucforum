@@ -29,6 +29,10 @@ a{
     justify-content: center;
 }
 
+.signin:hover {
+    background-color: rgb(200, 197, 197);
+}
+
 @media screen and (max-width: 1024px) {
     .topics{
         gap: 50px;

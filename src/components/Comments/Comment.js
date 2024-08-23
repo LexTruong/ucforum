@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import CommentForm from "./CommentForm"
 
-export default function Comment({comment, replies, currentUserId, deleteComment, activeComment, setActiveComment, parentId = null, addComment, updateComment, getReplies}) {
+export default function Comment({comment, replies, currentUserId, deleteComment, activeComment, setActiveComment, addComment, updateComment, getReplies}) {
     const canReply = Boolean(currentUserId)
     const canEdit = currentUserId === comment.authorId._id
     const canDelete = currentUserId === comment.authorId._id
@@ -51,20 +51,26 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
                 />
             )}
             <div className="commentOptions">
-                <p>Like / Dislike</p>
+                {canReply && <p>Like / Dislike</p>}
                 {canReply && (
                     <div 
+                    className="replyAction"
                     onClick={() => 
                     setActiveComment({_id: comment._id, type: "replying"}) }> Reply </div>)}
                 {canEdit && (
                     <div 
+                    className="editAction"
                     onClick={() => 
                     setActiveComment({_id: comment._id, type: "editing"}) }> Edit </div>)}
-                {canDelete && (<div onClick={() => deleteComment(comment._id)}> Delete </div>)}
+                {canDelete && (
+                    <div 
+                    className="deleteAction"
+                    onClick={() => 
+                    deleteComment(comment._id)}> Delete </div>)}
             </div>
              {isReplying && (
                 <CommentForm
-                    submitLabel="→" 
+                    submitLabel="Reply" 
                     // pass comment._id as parentId
                     hasCancelButton
                     handleSubmit={(text) => addComment(text, comment._id)}

@@ -75,5 +75,9 @@
     height: 50px;
     width: 200px;
     font-size: 15px;
+    cursor: pointer;
 }
 
+.postButton:hover{
+    background-color:#b114e0;
+}

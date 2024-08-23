@@ -55,7 +55,7 @@ export default function Navbar() {
             ? <div className="accountMenu">
                 <p className="accountName">{first} {last}</p>
                 <div className="dropdownMenu">
-                    <button className="buttonIcon" onClick={toggleDropdown}>
+                    <button onClick={toggleDropdown} className="buttonIcon">
                         <div className="bar"></div>
                         <div className="bar"></div>
                         <div className="bar"></div>

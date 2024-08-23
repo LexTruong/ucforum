@@ -33,10 +33,12 @@
 
 .createAccountbtn:hover{
     cursor: pointer;
+    background-color: #470147;
 }
 
 .signinbtn:hover{
     cursor: pointer;
+    background-color: #b114e0;
 }
 
 .signinbtn {

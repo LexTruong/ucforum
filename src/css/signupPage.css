@@ -44,3 +44,7 @@
     background-color: #BE29EC;
     font-size: 15px;
 }
+
+.create:hover{
+    background-color: #b114e0;
+}

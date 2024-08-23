@@ -191,7 +191,13 @@ app.get('/post/:id', async (req, res) => {
 // update post
 
 
+// delete post
+
+
 // update account
+
+
+// delete account
 
 
 // get all comments for a post
@@ -227,10 +233,36 @@ app.post('/addcomment/:id', verifyJWT, async (req, res) => {
 })
 
 // update a comment
+app.post('/updateComment/:id', async (req, res) => {
+    const {id} = req.params
+    const data = req.body
+    const _id = data.commentId
+    const newText = data.text
 
+    const postDoc = await Post.findById(id)
+    const comment = postDoc.comments.id(_id)
+    comment.body = newText
+    await postDoc.save()
+
+    res.json("Updated Comment")
+})
 
 // delete a comment
+app.post('/deleteComment/:id', async (req, res) => {
+    const {id} = req.params
+    const data = req.body
+    const deleteList = data.deleteCommentIds
 
+    const postDoc = await Post.findById(id)
+
+    for(i=0; i< deleteList.length; i++) {
+        postDoc.comments.id(deleteList[i]).deleteOne()
+    }
+
+    await postDoc.save()
+
+    res.json("Deleted Comment")
+})
 
 
 app.listen(8080, () => console.log('\nServer running on http://localhost:8080\n'))

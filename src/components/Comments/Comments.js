@@ -1,5 +1,4 @@
-import {useState, useEffect} from "react";  
-import {getComments as getCommentsApi, createComment as createCommentApi, deleteComment as deleteCommentApi, updateComment as updateCommentApi} from '../../api'
+import {useState, useEffect} from "react";
 import Comment from './Comment'
 import CommentForm from './CommentForm'  
 import { useNavigate } from "react-router-dom";
@@ -52,7 +51,78 @@ export default function Comments({id}) {
         navigate(0)
     }
 
-    // fetch current user ID and pass in as parameter to each comment
+    const updateComment = (text, commentId) => {
+        const body = {
+            text,
+            commentId
+        }
+
+        fetch(`http://localhost:8080/updateComment/${id}`, {
+            method: "POST",
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+
+        setActiveComment(null)
+        navigate(0)
+    }
+
+    const deleteComment = (commentId) => {
+        if(window.confirm("Are you sure delete yes?")) {
+            let deleteCommentIds = [commentId]
+
+            const deleteCommentHelper = (parentId) => {
+                let children = []
+
+                for(let i = 0; i < backendComments.length; i++) {
+                    if (backendComments[i].parentId == parentId) {
+                        children.push(backendComments[i]._id)
+                        deleteCommentIds.push(backendComments[i]._id)
+                    }   
+                }
+                
+                for(let j = 0; j < children.length; j++) {
+                    deleteCommentHelper(children[j])
+                }
+            }
+
+            deleteCommentHelper(commentId)
+
+            const body = {
+                deleteCommentIds
+            }
+
+            console.log(body)
+            
+            fetch(`http://localhost:8080/deleteComment/${id}`, {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(body)
+            })
+            
+            const updatedBackendComments = backendComments.filter(
+            (backendComment) => {
+                for(let k = 0; k < deleteCommentIds.length; k++) {
+                    if (backendComment._id === deleteCommentIds[k]) {
+                        return true
+                    }   
+                }
+                return false
+            })
+            setBackendComments(updatedBackendComments)
+
+            navigate(0)
+        } 
+    }
+
+    // fetch current user ID to pass in as parameter to each comment
     useEffect(() => {
         fetch('http://localhost:8080/isUserAuth', {
             headers: {
@@ -66,29 +136,6 @@ export default function Comments({id}) {
         })
     }, [])
 
-    const deleteComment = (commentId) => {
-        if(window.confirm("Are you sure delete yes?")) {
-            deleteCommentApi(commentId).then(() => {
-                const updateBackendComments = backendComments.filter(
-                    (backendComment) => backendComment._id !== commentId)
-                setBackendComments(updateBackendComments)
-            })
-        }
-    }
-
-    const updateComment = (text, commentId) => {
-        updateCommentApi(text, commentId).then(() => {
-            const updatedBackendComments = backendComments.map(backendComment => {
-                if (backendComment._id === commentId) {
-                    return {...backendComment, body: text}
-                }
-                return backendComment
-            })
-            setBackendComments(updatedBackendComments)
-            setActiveComment(null)
-        })
-    }
-
     return (
         <div className="commentsContainer">
             <div className="singlePostThumbs">
@@ -97,7 +144,10 @@ export default function Comments({id}) {
                 </div>
                 <h2 className="singlePostCommentTitle">{numComments} Comments</h2>
 
-            <CommentForm submitLabel="→" handleSubmit={addComment} placeholder="Leave a comment" />
+            {userId
+            ? <CommentForm submitLabel="Comment" handleSubmit={addComment} placeholder="Leave a comment" />
+            : <h4 className="signComment">Sign In To Comment</h4>
+            }
             
             <div className="comments">
                 {rootComments.map(rootComment => (
