@@ -1,6 +1,6 @@
 import {useState} from 'react';   
 
-export default function CommentForm({handleSubmit, submitLabel, hasCancelButton = false, initialText = '', handleCancel}) {
+export default function CommentForm({handleSubmit, submitLabel, hasCancelButton = false, initialText = '', handleCancel, placeholder}) {
     const [text, setText] = useState(initialText)
     const isTextareaDisabled = text.length == 0;
     const onSubmit = event => {
@@ -10,12 +10,12 @@ export default function CommentForm({handleSubmit, submitLabel, hasCancelButton 
     }
     return (
         <div>
-            <form onSubmit={onSubmit}>
-                <textarea placeholder="Write a Comment!" 
+            <form onSubmit={onSubmit} className="commentForm">
+                <input className="commentsTextArea" placeholder={placeholder}
                 value={text} onChange={(e) => setText(e.target.value)}/>
-                <button disabled = {isTextareaDisabled}>{submitLabel}</button>
+                <button disabled={isTextareaDisabled} className="submitComment">{submitLabel}</button>
                 {hasCancelButton && (
-                    <button type="button" onClick={handleCancel}> Cancel </button>
+                    <button type="button" onClick={handleCancel} >Cancel</button>
                 )}
             </form>
         </div> 

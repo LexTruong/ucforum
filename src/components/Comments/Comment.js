@@ -1,28 +1,46 @@
-import CommentForm from "./CommentForm"  
+import { useEffect, useState } from "react"
+import CommentForm from "./CommentForm"
 
 export default function Comment({comment, replies, currentUserId, deleteComment, activeComment, setActiveComment, parentId = null, addComment, updateComment, getReplies}) {
     const canReply = Boolean(currentUserId)
-    const canEdit = currentUserId  // === comment.userId
-    const canDelete = currentUserId  // === comment.userId
+    const canEdit = currentUserId === comment.authorId._id
+    const canDelete = currentUserId === comment.authorId._id
     const isReplying = activeComment && 
         activeComment.type === "replying" && 
         activeComment._id === comment._id
     const isEditing = activeComment && 
         activeComment.type === "editing" && 
         activeComment._id === comment._id
+        
+    const [username, setUsername] = useState("")
+    const [school, setSchool] = useState("")
+    const [position, setPosition] = useState("")
+    const [showReplies, setShowReplies] = useState(false)
 
-    // const replyId = parentId ? parentId : comment._id
-    if (!parentId) {
-        parentId = comment._id
+    useEffect(() => {
+        const first = comment.authorId.first.charAt(0).toUpperCase() + comment.authorId.first.slice(1)
+        const last = comment.authorId.last.charAt(0).toUpperCase() + comment.authorId.last.slice(1)
+        const school = comment.authorId.school.charAt(0).toUpperCase() + comment.authorId.school.slice(1)
+        const position = comment.authorId.position.charAt(0).toUpperCase() + comment.authorId.position.slice(1)
+
+        setUsername(first + " " + last)
+        setSchool(school)
+        setPosition(position)
+    }, [comment])
+
+    const handleReplies = () => {
+        setShowReplies(!showReplies)
     }
 
-
     return (
-        <div>
-            <div> 
-                <div>{comment.username}</div>
+        <div className="singleComment">
+            <div className="commentAuthorInfo"> 
+                <div className="commentUsername">{username}</div>
+                <div className="commentInfo">{school} {position}</div>
             </div>
-            {!isEditing && <div>{comment.body}</div>}
+            {!isEditing && <div className="commentBody">
+                {comment.body}
+                </div>}
             {isEditing && (
                 <CommentForm 
                 submitLabel="Update"
@@ -32,7 +50,8 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
                 handleCancel={() => setActiveComment(null)}
                 />
             )}
-            <div>
+            <div className="commentOptions">
+                <p>Like / Dislike</p>
                 {canReply && (
                     <div 
                     onClick={() => 
@@ -45,12 +64,18 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
             </div>
              {isReplying && (
                 <CommentForm
-                    submitLabel="Reply" 
+                    submitLabel="→" 
                     // pass comment._id as parentId
+                    hasCancelButton
                     handleSubmit={(text) => addComment(text, comment._id)}
+                    handleCancel={(() => setActiveComment(null))}
+                    placeholder="Reply"
                 /> 
             )}
-            {replies.length > 0 && (
+            {replies.length > 0 && (<div>
+                <button className="repliesButton" onClick={handleReplies}>↓ Replies</button>
+            </div>)}
+            {replies.length > 0 && showReplies && (
                 <div>
                     {replies.map(reply => (
                         <Comment comment={reply} key={reply._id}

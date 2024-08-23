@@ -50,17 +50,7 @@ export default function ViewPostPage() {
                 <div className="singlePostContent" dangerouslySetInnerHTML={{__html: postInfo.content}}></div>
             </div>
             
-
-            <div className="commentsContainer">
-                <div className="singlePostThumbs">
-                    <button className="singlePostThumbs"> ^ 500</button>
-                    <button className="singlePostThumbs"> ⌄ 500</button>
-                </div>
-                <h2 className="singlePostCommentTitle"> # of Comments</h2>
-                <div className="comments">
-                    <Comments id={id}></Comments>
-                </div>
-            </div>
+            <Comments id={id}></Comments>
         </div>
     )
 }

@@ -128,7 +128,8 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
     res.json({
         isLoggedIn: true,
         first: req.user.first,
-        last: req.user.last
+        last: req.user.last,
+        userId: req.user.id
     })
 })
 
@@ -226,6 +227,7 @@ app.post('/addcomment/:id', verifyJWT, async (req, res) => {
 })
 
 // update a comment
+
 
 // delete a comment
 

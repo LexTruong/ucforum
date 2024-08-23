@@ -1,0 +1,49 @@
+.comments{
+    margin-left: -30px;
+}
+
+.singleComment{
+    margin: 20px 0 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+
+.commentOptions {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.commentAuthorInfo{
+    display: flex;
+    gap: 12px;
+    align-items: end;
+}
+
+.commentUsername {
+    font-weight: bold;
+}
+
+.commentInfo{
+    font-size: 14px;
+    font-style: italic;
+    color: gray;
+}
+
+.commentsTextArea{
+    border: none;
+    width: 100%;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.repliesButton{
+    border: none;
+    background: none;
+    padding-left: 20px;
+    font-weight: bold;
+}

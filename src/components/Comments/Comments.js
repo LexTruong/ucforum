@@ -3,23 +3,25 @@ import {getComments as getCommentsApi, createComment as createCommentApi, delete
 import Comment from './Comment'
 import CommentForm from './CommentForm'  
 import { useNavigate } from "react-router-dom";
-
+import "../../css/comments.css"
 
 export default function Comments({id}) {
     const navigate = useNavigate()
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
     const [rootComments, setRootComments] = useState([])
-
+    const [userId, setUserId] = useState(null)
+    const [numComments, setNumComments] = useState(0)
+    
     // get comments
     useEffect(() => {
         fetch(`http://localhost:8080/comments/${id}`)
         .then(res => res.json())
         .then(data => {
             setBackendComments(data)
-            console.log(data)
             const roots = data.filter(comment => comment.parentId === null)
             setRootComments(roots)
+            setNumComments(data.length)
         }) 
     }, [id])
     
@@ -36,7 +38,7 @@ export default function Comments({id}) {
         }
 
         fetch(`http://localhost:8080/addcomment/${id}`, {
-            method: 'POST',
+            method: "POST",
             headers: {
                 "x-access-token": localStorage.getItem("token"),
                 "Content-type": "application/json"
@@ -51,12 +53,18 @@ export default function Comments({id}) {
     }
 
     // fetch current user ID and pass in as parameter to each comment
-    // compare current user ID with authorId of each comment to check
-    //     whether to display edit and delete buttons
-
-    // where is the handleCancel function?
-
-    // move delete, update functions to comment
+    useEffect(() => {
+        fetch('http://localhost:8080/isUserAuth', {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+                "Content-type": "application/json"
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            setUserId(data.userId)
+        })
+    }, [])
 
     const deleteComment = (commentId) => {
         if(window.confirm("Are you sure delete yes?")) {
@@ -82,22 +90,29 @@ export default function Comments({id}) {
     }
 
     return (
-        <div>
-            <div> Write Comment</div>
-            <CommentForm submitLabel="Write" handleSubmit={addComment}/>
-            <div>
+        <div className="commentsContainer">
+            <div className="singlePostThumbs">
+                    <button className="singlePostThumbs"> ^ 500</button>
+                    <button className="singlePostThumbs"> ⌄ 500</button>
+                </div>
+                <h2 className="singlePostCommentTitle">{numComments} Comments</h2>
+
+            <CommentForm submitLabel="→" handleSubmit={addComment} placeholder="Leave a comment" />
+            
+            <div className="comments">
                 {rootComments.map(rootComment => (
                     <Comment 
                     key={rootComment._id} 
                     comment={rootComment} 
                     replies={getReplies(rootComment._id)}
-                    currentUserId = {1}
-                    deleteComment = {deleteComment}
-                    activeComment = {activeComment}
-                    updateComment = {updateComment}
-                    setActiveComment = {setActiveComment}
-                    addComment = {addComment}
-                    getReplies = {getReplies}
+                    currentUserId={userId}
+                    deleteComment={deleteComment}
+                    activeComment={activeComment}
+                    updateComment={updateComment}
+                    setActiveComment={setActiveComment}
+                    addComment={addComment}
+                    getReplies={getReplies}
+                    className="commentBranch"
                     />
                 )
                     
