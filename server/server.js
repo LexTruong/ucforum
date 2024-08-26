@@ -163,6 +163,43 @@ app.post('/post', verifyJWT, upload.single('file'), async (req, res) => {
     }
 })
 
+// update Post
+app.put('/post', verifyJWT, upload.single('file'), async (req, res) => {
+    const postInfo = req.body
+
+    const title = postInfo.title
+    const summary = postInfo.summary
+    const content = postInfo.content
+    const topic = postInfo.topic
+    const caption = postInfo.caption
+    const id = postInfo.id
+
+
+    // author is the id corresponding to a user in the database
+    // can use to get user info from database
+    try {
+        const postDoc = await Post.findById(id)
+
+        await postDoc.updateOne({
+            title,
+            summary,
+            caption,
+            content,
+            topic,
+            file: req.file ? req.file.filename : postDoc.file
+        })
+
+        res.json("Post Updated")
+    } catch(error) {
+        res.status(400)
+        if (error.name === "ValidationError") {
+            res.json("Missing Info")
+        } else {
+            res.json(error.message)
+        }
+    }
+})
+
 // get all posts
 app.get('/posts', async (req, res) => {
     const posts = await Post.find().populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
@@ -188,17 +225,69 @@ app.get('/post/:id', async (req, res) => {
     res.json(post)
 })
 
-// update post
-
 
 // delete post
+app.put('/delete', async (req, res) => {
+    const {id} = req.body
+    await Post.deleteOne({ _id: id })
 
+    res.json("Deleted Post")
+})
 
 // update account
 
 
 // delete account
 
+
+// add or remove likes or dislikes
+app.put('/like', verifyJWT, async (req, res) => {
+    const {id, type, action} = req.body
+
+    if (type === "like" && action === "add") {
+        await Post.updateOne(
+            {_id: id},
+            {$push: {
+                likes: req.user.id
+            }}
+        )
+        const updatedPost = await Post.findById(id)
+        res.json(updatedPost.likes)
+    }
+
+    if (type === "like" && action === "remove") {
+        await Post.updateOne(
+            {_id: id},
+            {$pull: {
+                likes: req.user.id
+            }}
+        )
+        const updatedPost = await Post.findById(id)
+        res.json(updatedPost.likes)
+    }
+
+    if (type === "dislike" && action === "add") {
+        await Post.updateOne(
+            {_id: id},
+            {$push: {
+                dislikes: req.user.id
+            }}
+        )
+        const updatedPost = await Post.findById(id)
+        res.json(updatedPost.dislikes)
+    }
+
+    if (type === "dislike" && action === "remove") {
+        await Post.updateOne(
+            {_id: id},
+            {$pull: {
+                dislikes: req.user.id
+            }}
+        )
+        const updatedPost = await Post.findById(id)
+        res.json(updatedPost.dislikes)
+    }
+})
 
 // get all comments for a post
 app.get('/comments/:id', async (req, res) => {

@@ -138,11 +138,7 @@ export default function Comments({id}) {
 
     return (
         <div className="commentsContainer">
-            <div className="singlePostThumbs">
-                    <button className="singlePostThumbs"> ^ 500</button>
-                    <button className="singlePostThumbs"> ⌄ 500</button>
-                </div>
-                <h2 className="singlePostCommentTitle">{numComments} Comments</h2>
+            <h2 className="singlePostCommentTitle">{numComments} Comments</h2>
 
             {userId
             ? <CommentForm submitLabel="Comment" handleSubmit={addComment} placeholder="Leave a comment" />

@@ -46,6 +46,12 @@ const postSchema = mongoose.Schema({
     },
     comments: {
         type: [commentSchema]
+    },
+    likes: {
+        type: [String]
+    },
+    dislikes: {
+        type: [String]
     }
 }, {timestamps: true})
 

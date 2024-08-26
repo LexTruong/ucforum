@@ -3,8 +3,11 @@ import 'react-quill/dist/quill.snow.css';
 import "../css/createPostPage.css"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
+
 
 export default function EditPostPage() {
+    const navigate = useNavigate();
     const [title, setTitle] = useState("")
     const [summary, setSummary] = useState("")
     const [content, setContent] = useState("")
@@ -37,34 +40,68 @@ export default function EditPostPage() {
         fetch(`http://localhost:8080/post/${id}`)
         .then(res => res.json())
         .then(postInfo => {
-            setPostInfo(postInfo)
+            setTitle(postInfo.title)
+            setSummary(postInfo.summary)
+            setContent(postInfo.content)
+            setTopic(postInfo.topic)
+            setCaption(postInfo.caption)
         })
 
     }, [id])
 
-    if (!postInfo) return "Post Unavailable"
+    async function updatePost(e) {
+        e.preventDefault()
+
+        const data = new FormData()
+        data.set('title', title)
+        data.set('summary', summary)
+        data.set('content', content)
+        data.set('topic', topic)
+        data.set('caption', caption)
+        if (files?.[0]) {
+            data.set('file', files?.[0])
+        }
+        data.set('id', id)
+
+        fetch("http://localhost:8080/post", {
+            method: 'PUT',
+            headers: {
+                "x-access-token": localStorage.getItem("token")
+            },
+            body: data
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if (data === "Post Updated") {
+                navigate("/")
+            } else if (data === "Missing Info") {
+                alert("Fill Out All Information")
+            }
+        })
+    }
 
     return (
         <div className="createContainer">
             <h1 className="pageTitle">Edit Article</h1>
 
-            <form className="postInfo">
-                <input type="text" className="postTitle"
+            <form className="postInfo" onSubmit={updatePost}>
+                <input type="text" className="postTitle" value={title}
                     onChange={e => setTitle(e.target.value)}/>
                 <h3 className="articleTopicLabel">Article Topic</h3>
-                <select className="selectTopic" name="topic" required onChange={e => setTopic(e.target.value)}>
+                <select className="selectTopic" name="topic" value={topic} required onChange={e => setTopic(e.target.value)}>
                     <option value="Politics">Politics</option>
                     <option value="Education">Education</option>
                     <option value="Culture">Culture</option>
                 </select>
-                <textarea wrap="hard" type="text" className="postSummary"  
+                <textarea wrap="hard" type="text" className="postSummary"  value={summary}
                     onChange={e => setSummary(e.target.value)} required />
                 <div className="imageInput">
-                    <p className="imageLabel">Cover Image </p>
+                    <p className="imageLabel">Cover Image - Will remain unchanged if a new file is not chosen</p>
                     <input type="file" className="postImage" name="mainImage"
-                        onChange={e => setFiles(e.target.files)} required />
+                        onChange={e => setFiles(e.target.files)} />
                 </div>
-                <textarea wrap="hard" type="text" className="imageCaption"  
+                <textarea wrap="hard" type="text" className="imageCaption"  value={caption}
                     onChange={e => setCaption(e.target.value)} required />
 
                 <div className="editorContainer">
@@ -75,9 +112,10 @@ export default function EditPostPage() {
                         modules={modules}
                         formats={formats}
                         onChange={setContent}
+                        value={content}
                     />
                 </div>
-                <input type="submit" className="postButton" value='Post Article' />
+                <input type="submit" className="postButton" value='Update Article'/>
             </form>
         </div>
     )
