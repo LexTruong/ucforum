@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../css/navbar.css"
 import { useEffect, useState } from "react";
+import hamburger from '../images/hamburger.png'
 
 export default function Navbar() {
     const navigate = useNavigate()
@@ -55,11 +56,7 @@ export default function Navbar() {
             ? <div className="accountMenu">
                 <p className="accountName">{first} {last}</p>
                 <div className="dropdownMenu">
-                    <button onClick={toggleDropdown} className="buttonIcon">
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                    </button>
+                    <img onClick={toggleDropdown} className="buttonIcon"src={hamburger}/>
                     <div className="dropdownContent">
                         <Link to="/create">Write Article</Link>
                         <Link to="/">View Past Posts</Link>
@@ -67,6 +64,7 @@ export default function Navbar() {
                         <a href="/" onClick={logout}>Logout</a>
                     </div>
                 </div>
+
             </div>
             : <div className="signin">
                 <Link to="/signin">Sign In</Link>

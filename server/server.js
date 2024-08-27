@@ -133,7 +133,7 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
     })
 })
 
-// create new post and add to database
+// create new post and add to database 
 // takes a FormData object as body
 app.post('/post', verifyJWT, upload.single('file'), async (req, res) => {
     const postInfo = req.body
@@ -225,6 +225,11 @@ app.get('/post/:id', async (req, res) => {
     res.json(post)
 })
 
+//Get all posts of a single user
+app.get('/pastposts', verifyJWT, async (req, res) => {
+    const posts = await Post.find({ authorId: req.user.id }).populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1})
+    res.json(posts)
+})
 
 // delete post
 app.put('/delete', async (req, res) => {

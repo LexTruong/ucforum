@@ -12,6 +12,8 @@ import ViewPostPage from "./pages/ViewPostPage"
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
 import Comments from './components/Comments/Comments';
+import ViewPastPosts from './pages/ViewPastPosts'
+
 
 function App() {
 
@@ -26,6 +28,7 @@ function App() {
             <Route path="/edit/:id" element={<EditPostPage />} />
             <Route path="/topic/:name" element={<TopicPage />} />
             <Route path="/post/:id" element={<ViewPostPage />} />
+            <Route path="/past" element={<ViewPastPosts/>}/>
             <Route path="/user/:id" element={<ProfilePage />} />
             <Route path="/comments" element={<Comments />}/>
         </Route>

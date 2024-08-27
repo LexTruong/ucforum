@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import Comments from "../components/Comments/Comments"
 import { useNavigate } from 'react-router-dom';
+import thumbsUp from "../images/thumbs-up.png"
+import thumbsDown from "../images/thumbs-down.png"
 
 
 export default function ViewPostPage() {
@@ -170,7 +172,6 @@ export default function ViewPostPage() {
                 setLiked(false)
             }
         }
-        
     }
 
     if (!postInfo) return 'Post Unavailable'
@@ -186,8 +187,8 @@ export default function ViewPostPage() {
             </div>
             {postInfo.authorId._id === userId && (
                 <div className="postOptions">
-                    <Link to={`/edit/${id}`}>UPDATE POST</Link>
-                    <button onClick={deletePost}>DELETE POST</button>
+                    <Link className="editPostButton" to={`/edit/${id}`}>Edit Post</Link>
+                    <button className="deletePostButton" onClick={deletePost}>Delete Post</button>
                 </div>
             )} 
 
@@ -201,8 +202,27 @@ export default function ViewPostPage() {
             </div>
 
             <div className="likesDislikes">
-                <button className="singlePostThumbs" onClick={updateLikes}> ^ {likes.length}</button>
-                <button className="singlePostThumbs" onClick={updateDislikes}> ⌄ {dislikes.length}</button>
+                <div className={liked ? "likesContainer selected" : "likesContainer"} onClick={updateLikes}>
+                    <img className="thumbsUp" src={thumbsUp} alt="ThumbsUp" />
+                    <p className="singlePostThumbs"> {likes.length}</p>
+                </div>
+
+                <div className={disliked ? "dislikesContainer selected" : "dislikesContainer"} onClick={updateDislikes}>
+                    <img className="thumbsDown" src={thumbsDown} alt="activeThumbsDown" />
+                    <p className="singlePostThumbs"> {dislikes.length}</p>
+                </div>
+                
+                {/* {!liked && <img className="thumbsUp" src={thumbsUp} alt="ThumbsUp" onClick={updateLikes}></img>}
+                
+                <div className="currentLike"
+                {liked && <img className="activeThumbsUp" src={thumbsUp} alt="activeThumbsUp" onClick={updateLikes}></img>
+                <button className="singlePostThumbs" onClick={updateLikes}> {likes.length}</button>}
+
+                <div className="verticalLine"></div>
+
+                {disliked && <img className="activeThumbsDown" src={thumbsDown} alt="activeThumbsDown" onClick={updateDislikes}></img>}
+                <img className="thumbsDown" src={thumbsDown} alt="ThumbsDown" onClick={updateDislikes}></img>
+                <button className="singlePostThumbs" onClick={updateDislikes}> {dislikes.length}</button> */}
             </div>
             
             <Comments id={id}></Comments>
