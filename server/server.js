@@ -225,7 +225,7 @@ app.get('/post/:id', async (req, res) => {
     res.json(post)
 })
 
-//Get all posts of a single user
+// Get all posts of a single user
 app.get('/pastposts', verifyJWT, async (req, res) => {
     const posts = await Post.find({ authorId: req.user.id }).populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1})
     res.json(posts)
@@ -239,11 +239,65 @@ app.put('/delete', async (req, res) => {
     res.json("Deleted Post")
 })
 
-// update account
+// get account info
+app.get('/account', verifyJWT, async (req, res) => {
+    const userId = req.user.id
 
+    const user = await User.findById(userId)
+    res.json(user)
+})
+
+// update account
+app.put("/updateAccount", verifyJWT, async (req, res) => {
+    const updatedUser = req.body;
+
+    const userDoc = await User.findById(req.user.id)
+
+    if (userDoc.email !== updatedUser.email.toLowerCase()) {
+        const takenEmail = await User.findOne({email: updatedUser.email})
+        if (takenEmail) return res.json("Email Taken")
+    }
+    
+    encryptedPassword = await bcrypt.hash(updatedUser.password, 10)
+
+    await userDoc.updateOne({
+        first: updatedUser.first.toLowerCase(),
+        last: updatedUser.last.toLowerCase(),
+        school: updatedUser.school,
+        position: updatedUser.position,
+        email: updatedUser.email.toLowerCase(),
+        password: encryptedPassword
+    })
+
+    userDoc.save()
+
+    // return new JWT
+    const payload = {
+        id: req.user.id,
+        first: updatedUser.first.toLowerCase(),
+        last: updatedUser.last.toLowerCase()
+    }
+
+    jwt.sign(
+        payload,
+        encryptionKey,
+        {expiresIn:40000},
+        (err, token) => {
+            if(err) return res.json({message:err})
+            return res.json({
+                message: "Updated Account",
+                token: "Bearer " + token
+            })
+        }
+    )
+})
 
 // delete account
+app.get('/deleteAccount', verifyJWT, async (req, res) => {
+    await User.deleteOne({ _id: req.user.id })
 
+    res.json("Deleted User")
+})
 
 // add or remove likes or dislikes
 app.put('/like', verifyJWT, async (req, res) => {

@@ -43,7 +43,6 @@ export default function Navbar() {
             }
         }
       }
-    
 
     return (
         <nav>
@@ -56,11 +55,11 @@ export default function Navbar() {
             ? <div className="accountMenu">
                 <p className="accountName">{first} {last}</p>
                 <div className="dropdownMenu">
-                    <img onClick={toggleDropdown} className="buttonIcon"src={hamburger}/>
+                    <img onClick={toggleDropdown} className="buttonIcon" src={hamburger} alt="menu icon" />
                     <div className="dropdownContent">
                         <Link to="/create">Write Article</Link>
-                        <Link to="/">View Past Posts</Link>
-                        <Link to="/">Manage Account</Link>
+                        <Link to="/past">View Past Posts</Link>
+                        <Link to="/account">Manage Account</Link>
                         <a href="/" onClick={logout}>Logout</a>
                     </div>
                 </div>

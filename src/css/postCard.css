@@ -14,5 +14,10 @@
 }
 
 .carddetails{
+    padding-top: 5px;
     font-size: 14px;
+}
+
+.postCardDate{
+    color: gray;
 }

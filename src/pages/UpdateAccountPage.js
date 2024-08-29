@@ -2,10 +2,17 @@ import { useNavigate } from "react-router-dom"
 import "../css/signupPage.css"
 import { useEffect } from "react"
 import validator from "validator"
- 
+import { useState } from "react"
+import "../css/updateAccountPage.css"
 
-export default function SignUpPage() {
+export default function UpdateAccountPage() {
     const navigate = useNavigate()
+
+    const [email, setEmail] = useState()
+    const [first, setFirst] = useState()
+    const [last, setLast] = useState()
+    const [school, setSchool] = useState()
+    const [position, setPosition] = useState()
 
     const validateEmail = (email) => {
         const atLocation = email.search("@")
@@ -44,7 +51,7 @@ export default function SignUpPage() {
         }
     }
     
-    async function handleRegister(e) {
+    const updateAccount = (e) => {
         e.preventDefault()
 
         const form = e.target
@@ -58,44 +65,60 @@ export default function SignUpPage() {
                 email: form[4].value,
                 password: form[5].value
             }
-    
-            fetch("http://localhost:8080/register", {
-                method: "POST",
+
+            fetch("http://localhost:8080/updateAccount", {
+                method: "PUT",
                 headers: {
+                    "x-access-token": localStorage.getItem("token"),
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify(user)
             })
             .then(res => res.json())
             .then(data => {
-                if (data.message === "Taken Email") {
+                if (data.message === "Email Taken") {
                     alert("Email Taken Already")
+                    navigate(0)
                 } else {
-                    navigate("/signin")
+                    localStorage.setItem("token", data.token)
+                    navigate("/account")
+                    navigate(0)
                 }
             })
         }
     }
 
+    // get previous account info to fill in inputs
     useEffect(() => {
-        fetch("http://localhost:8080/isUserAuth", {
+        fetch("http://localhost:8080/account", {
             headers: {
-                "x-access-token": localStorage.getItem("token")
-            }
+                "x-access-token": localStorage.getItem("token"),
+                "Content-type": "application/json"
+            },
         })
         .then(res => res.json())
-        .then(data => data.isLoggedIn ? navigate("/") : null)
-    }, [navigate])    
+        .then(userDoc => {
+            setEmail(userDoc.email)
+            setPosition(userDoc.position)
+            setSchool(userDoc.school)
 
+            const first = userDoc.first.charAt(0).toUpperCase() + userDoc.first.slice(1)
+            const last = userDoc.last.charAt(0).toUpperCase() + userDoc.last.slice(1)
+            setFirst(first)
+            setLast(last)
+        })
+    }, [])
+    
     return (
         <div className="signupcontainer">
-            <form className="signupform" onSubmit={e => handleRegister(e)}>
+            <h1 className="updateAccountTitle">Update Account Information</h1>
+            <form className="signupform" onSubmit={e => updateAccount(e)}>
                 <div className="fullname">
-                    <input className="input" type="text" name="fname" placeholder="First Name" required/>
-                    <input className="input" type="text" name="lname" placeholder="Last Name" required/>
+                    <input className="input" type="text" name="fname" value={first} required onChange={e => setFirst(e.target.value)}/>
+                    <input className="input" type="text" name="lname" value={last} required onChange={e => setLast(e.target.value)}/>
                 </div>
                 <div className="dropdowns">
-                    <select action="#" name="school" required>
+                    <select action="#" name="school" value={school} required onChange={e => setSchool(e.target.value)}>
                         <option value="Berkeley">Berkeley</option>
                         <option value="Davis">Davis</option>
                         <option value="Irvine">Irvine</option>
@@ -106,7 +129,7 @@ export default function SignUpPage() {
                         <option value="Santa Cruz">Santa Cruz</option>
                         <option value="Riverside">Riverside</option>
                     </select>
-                    <select name="position" required>
+                    <select name="position" value={position} required onChange={e => setPosition(e.target.value)}>
                         <option value="Freshman">Freshman</option>
                         <option value="Sophomore">Sophomore</option>
                         <option value="Junior">Junior</option>
@@ -116,9 +139,9 @@ export default function SignUpPage() {
                         <option value="Faculty">Faculty</option>
                     </select>
                 </div>
-                <input className="input" type="email" name="email" placeholder="Email" required />
-                <input className="input" type="password" name="password" placeholder="Password" required />
-                <input className="input create" type="submit" value="Create Account" />
+                <input className="input" type="email" name="email" value={email} required onChange={e => setEmail(e.target.value)} />
+                <input className="input" type="password" name="password" placeholder="Old or New Password" required />
+                <input className="input create" type="submit" value="Update Account" />
             </form>
         </div>
     )

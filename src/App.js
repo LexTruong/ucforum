@@ -13,7 +13,8 @@ import React from 'react';
 import ProfilePage from './pages/ProfilePage';
 import Comments from './components/Comments/Comments';
 import ViewPastPosts from './pages/ViewPastPosts'
-
+import AccountPage from './pages/AccountPage';
+import UpdateAccountPage from './pages/UpdateAccountPage';
 
 function App() {
 
@@ -31,6 +32,8 @@ function App() {
             <Route path="/past" element={<ViewPastPosts/>}/>
             <Route path="/user/:id" element={<ProfilePage />} />
             <Route path="/comments" element={<Comments />}/>
+            <Route path="/account" element={<AccountPage />}/>
+            <Route path="/update" element={<UpdateAccountPage/>}/>
         </Route>
     </Routes>
   );

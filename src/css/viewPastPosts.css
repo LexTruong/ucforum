@@ -13,7 +13,27 @@
 }
 
 .postCardContainer{
+    flex: 1; 
+}
+
+.pastPostInfo{
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    gap: 30px;
+}
+
+.statistics{
+    display: flex;
+    flex-direction: column;    
+    padding-bottom: 5px;
+    align-items: left;
+}
+
+.statistics span{
+    font-size: 20px;
 }
 
 .pastPostOptions{
@@ -28,27 +48,69 @@
 }
 
 .editButton{
-    background-color: lightgray;
+    background-color: #BE29EC;
     height: 40px;
-    width: 200px;
+    width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
     border-radius: 10px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: -5px;
 }
 
 .deleteButton{
     height: 40px;
-    width: 200px;
+    width: 300px;
     border: none;
     border-radius: 10px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     background-color: lightgray;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+
+.editButton:hover {
+    background-color: #b114e0;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: rgb(183, 181, 181);
+}
+
+@media screen and (max-width: 1024px) {
+    .pastPostsContainer{
+        padding: 0 100px;
+    }
+
+    .editButton, .deleteButton{
+        width: 200px;
+    }
+    
+    .statistics span{
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .pastPostsContainer{
+        padding: 0 50px;
+    }
+
+    .pastPost{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .editButton, .deleteButton{
+        width: 350px;
+    }
+
 }
