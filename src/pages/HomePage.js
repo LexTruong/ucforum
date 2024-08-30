@@ -3,8 +3,8 @@ import Carousel from "../components/Carousel"
 import "../css/homePage.css"
 
 export default function HomePage() {
-   // later differentiate between latest and popular posts
    const [posts, setPosts] = useState([])
+   const [popularPosts, setPopularPosts] = useState([])
 
    useEffect(() => {
       fetch("http://localhost:8080/posts")
@@ -12,15 +12,19 @@ export default function HomePage() {
       .then(posts => setPosts(posts))
    }, [])
 
-   return (
-      // should check if posts list is empty
+   useEffect(() => {
+      fetch("http://localhost:8080/posts/popular")
+      .then(res => res.json())
+      .then(posts => setPopularPosts(posts))
+   }, [])
 
+   return (
       <div>
          <h1 className="subtitle">Latest</h1>
          <Carousel posts={posts}></Carousel>
 
          <h1 className="subtitle">Top Stories</h1>
-         <Carousel posts={posts}></Carousel>
+         <Carousel posts={popularPosts}></Carousel>
       </div>
 
    )

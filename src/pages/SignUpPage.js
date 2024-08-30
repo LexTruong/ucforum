@@ -7,6 +7,8 @@ import validator from "validator"
 export default function SignUpPage() {
     const navigate = useNavigate()
 
+    const regex = /^[a-zA-Z]+$/;
+
     const validateEmail = (email) => {
         const atLocation = email.search("@")
         const afterAt = email.slice(atLocation+1)
@@ -59,21 +61,30 @@ export default function SignUpPage() {
                 password: form[5].value
             }
     
-            fetch("http://localhost:8080/register", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(user)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message === "Taken Email") {
-                    alert("Email Taken Already")
-                } else {
-                    navigate("/signin")
-                }
-            })
+            if(!(regex.test(form[0].value)) || !((regex.test(form[1].value)))) {
+                alert("First and Last Names May Only Contain Letters")
+            }
+            else if(!(form[5].value === form[6].value)) {
+                alert("Passwords Must Match")
+            }
+            else {
+                fetch("http://localhost:8080/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(user)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.message === "Taken Email") {
+                        alert("Email Taken Already")
+                    } else {
+                        navigate("/signin")
+                        alert("Account Created")
+                    }
+                })
+            }
         }
     }
 
@@ -118,6 +129,7 @@ export default function SignUpPage() {
                 </div>
                 <input className="input" type="email" name="email" placeholder="Email" required />
                 <input className="input" type="password" name="password" placeholder="Password" required />
+                <input className="input" type="password" name="passwordCheck" placeholder="Confirm Password" required />
                 <input className="input create" type="submit" value="Create Account" />
             </form>
         </div>

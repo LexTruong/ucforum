@@ -63,28 +63,33 @@ export default function UpdateAccountPage() {
                 school: form[2].value,
                 position: form[3].value,
                 email: form[4].value,
-                password: form[5].value
+                password: form[5].value,
             }
 
-            fetch("http://localhost:8080/updateAccount", {
-                method: "PUT",
-                headers: {
-                    "x-access-token": localStorage.getItem("token"),
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(user)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message === "Email Taken") {
-                    alert("Email Taken Already")
-                    navigate(0)
-                } else {
-                    localStorage.setItem("token", data.token)
-                    navigate("/account")
-                    navigate(0)
-                }
-            })
+            if(!(form[5].value===form[6].value)) {
+                alert("Passwords Must Match")
+            }
+            else {
+                fetch("http://localhost:8080/updateAccount", {
+                    method: "PUT",
+                    headers: {
+                        "x-access-token": localStorage.getItem("token"),
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(user)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.message === "Email Taken") {
+                        alert("Email Taken Already")
+                        navigate(0)
+                    } else {
+                        localStorage.setItem("token", data.token)
+                        navigate("/account")
+                        navigate(0)
+                    }
+                })
+            }
         }
     }
 
@@ -141,6 +146,7 @@ export default function UpdateAccountPage() {
                 </div>
                 <input className="input" type="email" name="email" value={email} required onChange={e => setEmail(e.target.value)} />
                 <input className="input" type="password" name="password" placeholder="Old or New Password" required />
+                <input className="input" type="password" name="passwordCheck" placeholder="Confirm Password" required />
                 <input className="input create" type="submit" value="Update Account" />
             </form>
         </div>

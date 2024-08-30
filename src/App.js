@@ -15,6 +15,7 @@ import Comments from './components/Comments/Comments';
 import ViewPastPosts from './pages/ViewPastPosts'
 import AccountPage from './pages/AccountPage';
 import UpdateAccountPage from './pages/UpdateAccountPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/comments" element={<Comments />}/>
             <Route path="/account" element={<AccountPage />}/>
             <Route path="/update" element={<UpdateAccountPage/>}/>
+            <Route path="/forgot" element={<ForgotPasswordPage/>}/>
         </Route>
     </Routes>
   );

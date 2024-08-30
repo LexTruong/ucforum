@@ -21,7 +21,7 @@ const responsive = {
     }
   }
 
-// check if posts is empty
+// if posts list is empty, show fun default post
 
 export default function PostCarousel({posts}) {
   // posts is a list of post objects

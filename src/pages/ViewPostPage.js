@@ -114,24 +114,40 @@ export default function ViewPostPage() {
     }
 
     const updateLikes = () => {
-        if (liked) {
-            const body = {
-                id,
-                type: "like",
-                action: "remove"
-            }
-            fetchLike(body)
-            setLiked(false)
+        if(userId != null) {
+            if (liked) {
+                const body = {
+                    id,
+                    type: "like",
+                    action: "remove"
+                }
+                fetchLike(body)
+                setLiked(false)
 
-        } else {
-            const body = {
-                id,
-                type: "like",
-                action: "add"
-            }
-            fetchLike(body)
-            setLiked(true)
+            } else {
+                const body = {
+                    id,
+                    type: "like",
+                    action: "add"
+                }
+                fetchLike(body)
+                setLiked(true)
 
+                if (disliked) {
+                    const body = {
+                        id,
+                        type: "dislike",
+                        action: "remove"
+                    }
+                    fetchLike(body)
+                    setDisliked(false)
+                }
+            }
+        }
+    }
+
+    const updateDislikes = () => {
+        if(userId != null) {
             if (disliked) {
                 const body = {
                     id,
@@ -140,36 +156,24 @@ export default function ViewPostPage() {
                 }
                 fetchLike(body)
                 setDisliked(false)
-            }
-        }
-    }
-
-    const updateDislikes = () => {
-        if (disliked) {
-            const body = {
-                id,
-                type: "dislike",
-                action: "remove"
-            }
-            fetchLike(body)
-            setDisliked(false)
-        } else {
-            const body = {
-                id,
-                type: "dislike",
-                action: "add"
-            }
-            fetchLike(body)
-            setDisliked(true)
-
-            if(liked) {
+            } else {
                 const body = {
                     id,
-                    type: "like",
-                    action: "remove"
+                    type: "dislike",
+                    action: "add"
                 }
                 fetchLike(body)
-                setLiked(false)
+                setDisliked(true)
+
+                if(liked) {
+                    const body = {
+                        id,
+                        type: "like",
+                        action: "remove"
+                    }
+                    fetchLike(body)
+                    setLiked(false)
+                }
             }
         }
     }

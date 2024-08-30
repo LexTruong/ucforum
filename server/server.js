@@ -200,14 +200,37 @@ app.put('/post', verifyJWT, upload.single('file'), async (req, res) => {
     }
 })
 
-// get all posts
+// get all posts, sort by date
 app.get('/posts', async (req, res) => {
     const posts = await Post.find().populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
 
     res.json(posts)
 })
 
-// get all posts of a topic
+// get all posts, sort by number of likes and dislikes
+app.get('/posts/popular', async (req, res) => {
+    const posts = await Post.aggregate([
+        {
+            "$addFields": {
+                "interactions": {"$add": [
+                    {"$size": "$likes"},
+                    {"$size": "$dislikes"},
+                    {"$size": "$comments"}
+                ]
+            }}
+        },
+        {
+            "$sort": {"interactions": -1}
+        },
+        {
+            "$limit": 20
+        }
+    ])
+    const populated = await User.populate(posts, {"path": "authorId"})
+    res.json(populated)
+})
+
+// get all posts of a topic, sort by date
 app.get('/topic/:name', async (req, res) => {
     const {name} = req.params
     
@@ -216,6 +239,35 @@ app.get('/topic/:name', async (req, res) => {
     const posts = await Post.find({ topic: topic }).populate('authorId', ['first', 'last', 'email', 'school', 'position']).sort({createdAt: -1}).limit(20)
 
     res.json(posts)
+})
+
+// get all posts of a topic, sort by popularity
+app.get('/topic/popular/:name', async (req, res) => {
+    const {name} = req.params
+    const capitalized = name.charAt(0).toUpperCase() + name.slice(1)
+
+    const posts = await Post.aggregate([
+        {
+            "$match": {"topic": capitalized}
+        },
+        {
+            "$addFields": {
+                "interactions": {"$add": [
+                    {"$size": "$likes"},
+                    {"$size": "$dislikes"},
+                    {"$size": "$comments"}
+                ]
+            }}
+        },
+        {
+            "$sort": {"interactions": -1}
+        },
+        {
+            "$limit": 20
+        }
+    ])
+    const populated = await User.populate(posts, {"path": "authorId"})
+    res.json(populated)
 })
 
 // get single post

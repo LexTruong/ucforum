@@ -58,7 +58,9 @@ export default function SignInPage() {
                     placeholder="Password" required />
                 <input className="signinbtn" type="submit" value="Sign In" ></input>
             </form>
-            <a href="google.com"><p className="forgot">Forget Password?</p></a>
+            <Link to="/forgot">
+                <p className="forgot">Forget Password?</p>
+            </Link>
             <hr></hr>
             <Link to="/signup">
                 <button type="button" className="createAccountbtn">Create Account</button>

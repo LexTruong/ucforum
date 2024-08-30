@@ -65,5 +65,11 @@
 
 .deleteAccount{
     color: red;
-    padding-top: 20px;
+    margin-top: 20px;
+    width: 110px;
+}
+
+.deleteAccount:hover{
+    cursor: pointer;
+    color: rgb(190, 4, 4);
 }

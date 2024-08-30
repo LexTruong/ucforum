@@ -51,7 +51,6 @@ export default function Comment({comment, replies, currentUserId, deleteComment,
                 />
             )}
             <div className="commentOptions">
-                {canReply && <p>Like / Dislike</p>}
                 {canReply && (
                     <div 
                     className="replyAction"
